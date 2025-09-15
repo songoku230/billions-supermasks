@@ -13,6 +13,7 @@ h1 {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   font-weight: bold;
   color: white;
+  margin-bottom: 20px;
 }
 
 .title-main {
@@ -28,13 +29,12 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
-.frame::before {
-  content: "";
-  width: 250px;
-  height: 250px;
-  background: #eee;
+.frame img {
+  max-width: 250px;
+  max-height: 250px;
   border-radius: 15px;
 }
 
