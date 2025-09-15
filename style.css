@@ -1,0 +1,148 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* Light background for the overall page */
+}
+
+.container {
+    width: 100%;
+    max-width: 375px; /* Typical mobile width for design reference */
+    background-color: #55acee; /* Top blue section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px; /* Space at the bottom */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    min-height: 100vh; /* Make the container take full height on small screens */
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+header {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 30px 0;
+}
+
+.billions-text {
+    font-size: 2em;
+    color: white;
+    margin: 0;
+    font-weight: normal;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.supermasks-text {
+    font-size: 3.5em; /* Larger for "Supermasks" */
+    color: white;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    letter-spacing: -2px; /* A little tighter spacing */
+}
+
+main {
+    width: 100%;
+    background: linear-gradient(to bottom, #ff9ad8 50%, #b3e691 50%); /* Pink and green split */
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-upload-area {
+    width: 80%;
+    max-width: 250px; /* Adjust size of the grey square */
+    height: 250px;
+    background-color: #e0e0e0; /* Grey background for upload area */
+    border-radius: 15px; /* Slightly rounded corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure image doesn't overflow */
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    border: 2px solid rgba(255,255,255,0.5); /* Light border */
+}
+
+.image-upload-area img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures the image fits within the area without cropping */
+}
+
+#uploadPrompt {
+    color: #888;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+footer {
+    width: 100%;
+    background-color: #55acee; /* Bottom blue section */
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    padding: 20px 10px;
+}
+
+.button {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px; /* Rounded buttons */
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.upload-button {
+    background-color: #ff9ad8; /* Pink */
+}
+
+.upload-button:hover {
+    background-color: #e087bd;
+}
+
+.supermasks-button {
+    background-color: #4b8cdb; /* Blue */
+}
+
+.supermasks-button:hover {
+    background-color: #3b74b6;
+}
+
+.download-button {
+    background-color: #b3e691; /* Green */
+    color: #333; /* Darker text for green button */
+    width: calc(100% - 40px); /* Full width minus padding for the download button */
+    max-width: 300px;
+}
+
+.download-button:hover {
+    background-color: #9cd17c;
+}
+
+/* Basic responsiveness for smaller screens */
+@media (max-width: 480px) {
+    .container {
+        min-height: 100vh; /* Full height on mobile */
+        border-radius: 0;
+    }
+    .supermasks-text {
+        font-size: 3em;
+    }
+    .button {
+        width: calc(50% - 25px); /* Two buttons per row, adjusted for gap */
+        box-sizing: border-box;
+    }
+    .download-button {
+        width: calc(100% - 20px); /* Full width for download button */
+    }
+}
