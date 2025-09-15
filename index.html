@@ -8,17 +8,24 @@
 </head>
 <body>
   <div class="container">
-    <h1><span class="title-top">Billions</span><br><span class="title-main">Supermasks</span></h1>
+    <h1>
+      <span class="title-top">Billions</span><br>
+      <span class="title-main">Supermasks</span>
+    </h1>
 
-    <div class="frame"></div>
-
-    <div class="buttons">
-      <button class="upload">Upload image</button>
-      <button class="supermasks">Supermasks</button>
+    <div class="frame">
+      <img id="preview" alt="Preview" />
     </div>
 
-    <button class="download">Download</button>
+    <div class="buttons">
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <button class="upload" onclick="document.getElementById('fileInput').click()">Upload image</button>
+      <button class="supermasks" onclick="applyMask()">Supermasks</button>
+    </div>
+
+    <button class="download" onclick="downloadImage()">Download</button>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
