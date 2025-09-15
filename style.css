@@ -1,173 +1,68 @@
-:root {
-    --color-blue: #55acee;
-    --color-pink: #ff9ad8;
-    --color-green: #b3e691;
-    --color-dark-blue: #4b8cdb;
-    --color-text-dark: #333;
-    --color-white: #fff;
-    --color-grey: #e0e0e0;
-}
-
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #4fc3f7;
+  margin: 0;
 }
 
 .container {
-    width: 100%;
-    max-width: 420px;
-    background-color: var(--color-blue);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    min-height: 100vh;
+  padding: 20px;
 }
 
-header {
-    width: 100%;
-    text-align: center;
-    padding: 20px 0 30px 0;
+h1 {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: bold;
+  color: white;
 }
 
-.billions-text {
-    font-size: 2em;
-    color: var(--color-white);
-    margin: 0;
-    font-weight: normal;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+.title-main {
+  font-size: 40px;
 }
 
-.supermasks-text {
-    font-size: 3.5em;
-    color: var(--color-white);
-    margin: 0;
-    font-weight: bold;
-    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-    letter-spacing: -2px;
+.frame {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(#ff80ab 50%, #a5d6a7 50%);
+  margin: 20px auto;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-main {
-    width: 100%;
-    background: linear-gradient(to bottom, var(--color-pink) 50%, var(--color-green) 50%);
-    padding: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.frame::before {
+  content: "";
+  width: 250px;
+  height: 250px;
+  background: #eee;
+  border-radius: 15px;
 }
 
-.image-upload-area {
-    width: 80%;
-    max-width: 280px;
-    height: 280px;
-    background-color: var(--color-grey);
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.2s ease;
+.buttons {
+  margin: 15px;
 }
 
-.image-upload-area img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-#uploadPrompt {
-    color: #888;
-    font-size: 1.1em;
-    text-align: center;
+.upload {
+  background: #ff80ab;
+  color: white;
 }
 
-footer {
-    width: 100%;
-    background-color: var(--color-blue);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px 10px;
+.supermasks {
+  background: #1976d2;
+  color: white;
 }
 
-.button {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1em;
-    font-weight: bold;
-    color: var(--color-white);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.upload-button {
-    background-color: var(--color-pink);
-}
-
-.supermasks-button {
-    background-color: var(--color-dark-blue);
-}
-
-.download-button {
-    background-color: var(--color-green);
-    color: var(--color-text-dark);
-    width: calc(100% - 40px);
-    max-width: 300px;
-}
-
-#statusMessage {
-    text-align: center;
-    font-weight: bold;
-    color: var(--color-text-dark);
-    padding: 10px 0;
-    min-height: 1.5em; /* Prevents layout jump when message appears */
-    width: 100%;
-    background-color: var(--color-blue);
-    color: var(--color-white);
-}
-
-/* --- */
-/* DESKTOP-SPECIFIC STYLES (min-width: 768px) */
-/* --- */
-@media (min-width: 768px) {
-    .container {
-        /* This creates the "framed app" look on desktop */
-        min-height: 80vh;
-        max-width: 500px;
-        border-radius: 15px;
-        margin: 20px;
-    }
-    
-    footer {
-        flex-wrap: nowrap; /* Prevents buttons from wrapping on desktop */
-        padding: 20px;
-        margin-top: auto; /* Pushes the footer to the bottom of the container */
-    }
-    
-    .button {
-        flex-grow: 1; /* Makes buttons grow to fill space evenly */
-        width: auto;
-    }
-    
-    .download-button {
-        width: 100%;
-        max-width: unset; /* Remove max-width on desktop for full button width */
-    }
-
-    #statusMessage {
-        border-radius: 0 0 15px 15px; /* Rounds the bottom corners of the status bar on desktop */
-    }
+.download {
+  background: #4caf50;
+  color: white;
 }
