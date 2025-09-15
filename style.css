@@ -1,148 +1,160 @@
+:root {
+    --color-blue: #55acee;
+    --color-pink: #ff9ad8;
+    --color-green: #b3e691;
+    --color-dark-blue: #4a9ad3;
+    --color-light-pink: #ffadd8;
+    --color-light-green: #c0f09a;
+    --color-grey: #e0e0e0;
+    --color-text-dark: #333;
+    --color-white: #fff;
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0; /* Light background for the overall page */
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
+    box-sizing: border-box;
 }
 
 .container {
-    width: 100%;
-    max-width: 375px; /* Typical mobile width for design reference */
-    background-color: #55acee; /* Top blue section */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 20px; /* Space at the bottom */
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    min-height: 100vh; /* Make the container take full height on small screens */
-    box-sizing: border-box; /* Include padding in element's total width and height */
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--color-blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 header {
-    width: 100%;
-    text-align: center;
-    padding: 20px 0 30px 0;
+    width: 100%;
+    text-align: center;
+    padding: 30px 0;
 }
 
 .billions-text {
-    font-size: 2em;
-    color: white;
-    margin: 0;
-    font-weight: normal;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 1.8em;
+    color: var(--color-white);
+    margin: 0;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .supermasks-text {
-    font-size: 3.5em; /* Larger for "Supermasks" */
-    color: white;
-    margin: 0;
-    font-weight: bold;
-    text-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-    letter-spacing: -2px; /* A little tighter spacing */
+    font-size: 3.8em;
+    color: var(--color-white);
+    margin: 0;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -2px;
 }
 
 main {
-    width: 100%;
-    background: linear-gradient(to bottom, #ff9ad8 50%, #b3e691 50%); /* Pink and green split */
-    padding: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    background: linear-gradient(to bottom, var(--color-pink) 50%, var(--color-green) 50%);
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-upload-area {
-    width: 80%;
-    max-width: 250px; /* Adjust size of the grey square */
-    height: 250px;
-    background-color: #e0e0e0; /* Grey background for upload area */
-    border-radius: 15px; /* Slightly rounded corners */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Ensure image doesn't overflow */
-    cursor: pointer;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-    border: 2px solid rgba(255,255,255,0.5); /* Light border */
+    width: 85%;
+    max-width: 300px;
+    height: 300px;
+    background-color: var(--color-grey);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.image-upload-area:hover {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 .image-upload-area img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Ensures the image fits within the area without cropping */
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: all 0.5s ease;
 }
 
 #uploadPrompt {
-    color: #888;
-    font-size: 1.1em;
-    text-align: center;
+    color: #888;
+    font-size: 1.1em;
+    text-align: center;
+    transition: opacity 0.5s ease;
 }
 
 footer {
-    width: 100%;
-    background-color: #55acee; /* Bottom blue section */
-    display: flex;
-    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-    justify-content: center;
-    gap: 15px; /* Space between buttons */
-    padding: 20px 10px;
+    width: 100%;
+    background-color: var(--color-blue);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 30px 15px;
 }
 
 .button {
-    padding: 15px 25px;
-    border: none;
-    border-radius: 10px; /* Rounded buttons */
-    font-size: 1.1em;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--color-white);
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    background-size: 200% auto;
+}
+
+.button:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+    background-position: right center;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .upload-button {
-    background-color: #ff9ad8; /* Pink */
-}
-
-.upload-button:hover {
-    background-color: #e087bd;
+    background-image: linear-gradient(to right, var(--color-pink) 0%, var(--color-light-pink) 50%, var(--color-pink) 100%);
 }
 
 .supermasks-button {
-    background-color: #4b8cdb; /* Blue */
-}
-
-.supermasks-button:hover {
-    background-color: #3b74b6;
+    background-image: linear-gradient(to right, var(--color-dark-blue) 0%, var(--color-blue) 50%, var(--color-dark-blue) 100%);
 }
 
 .download-button {
-    background-color: #b3e691; /* Green */
-    color: #333; /* Darker text for green button */
-    width: calc(100% - 40px); /* Full width minus padding for the download button */
-    max-width: 300px;
+    background-image: linear-gradient(to right, var(--color-green) 0%, var(--color-light-green) 50%, var(--color-green) 100%);
+    color: var(--color-text-dark);
+    width: 100%;
+    max-width: 350px;
+    margin-top: 10px;
 }
 
-.download-button:hover {
-    background-color: #9cd17c;
-}
-
-/* Basic responsiveness for smaller screens */
-@media (max-width: 480px) {
-    .container {
-        min-height: 100vh; /* Full height on mobile */
-        border-radius: 0;
-    }
-    .supermasks-text {
-        font-size: 3em;
-    }
-    .button {
-        width: calc(50% - 25px); /* Two buttons per row, adjusted for gap */
-        box-sizing: border-box;
-    }
-    .download-button {
-        width: calc(100% - 20px); /* Full width for download button */
-    }
+#statusMessage {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--color-text-dark);
 }
