@@ -1,160 +1,203 @@
-:root {
-    --color-blue: #55acee;
-    --color-pink: #ff9ad8;
-    --color-green: #b3e691;
-    --color-dark-blue: #4a9ad3;
-    --color-light-pink: #ffadd8;
-    --color-light-green: #c0f09a;
-    --color-grey: #e0e0e0;
-    --color-text-dark: #333;
-    --color-white: #fff;
-}
-
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #f5f5f5, #e0e0e0);
-    box-sizing: border-box;
+    margin: 0;
+    font-family: Arial, sans-serif; /* Simplified font back to Arial for exact match */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* Light background for the overall page */
+    box-sizing: border-box;
 }
 
 .container {
-    width: 100%;
-    max-width: 400px;
-    background-color: var(--color-blue);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    min-height: 100vh;
-    box-sizing: border-box;
+    width: 100%;
+    max-width: 420px; /* Slightly wider to match your image's proportions */
+    background-color: #55acee; /* Top blue section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px; /* Space at the bottom */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    min-height: 100vh; /* Make the container take full height on small screens */
+    box-sizing: border-box;
+    border-radius: 0; /* Removed border-radius for container to match original image */
 }
 
 header {
-    width: 100%;
-    text-align: center;
-    padding: 30px 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 30px 0;
 }
 
 .billions-text {
-    font-size: 1.8em;
-    color: var(--color-white);
-    margin: 0;
-    font-weight: 300;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 2em;
+    color: white;
+    margin: 0;
+    font-weight: normal; /* Back to normal weight */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2); /* For that soft, puffy look */
 }
 
 .supermasks-text {
-    font-size: 3.8em;
-    color: var(--color-white);
-    margin: 0;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: -2px;
+    font-size: 3.5em; /* Larger for "Supermasks" */
+    color: white;
+    margin: 0;
+    font-weight: bold; /* Bold as in original */
+    text-shadow: 3px 3px 5px rgba(0,0,0,0.3); /* Stronger shadow for "Supermasks" */
+    letter-spacing: -2px; /* A little tighter spacing */
 }
 
 main {
-    width: 100%;
-    background: linear-gradient(to bottom, var(--color-pink) 50%, var(--color-green) 50%);
-    padding: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    /* Reverted to exact gradient split for pink and green */
+    background: linear-gradient(to bottom, #ff9ad8 50%, #b3e691 50%);
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-upload-area {
-    width: 85%;
-    max-width: 300px;
-    height: 300px;
-    background-color: var(--color-grey);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    width: 80%; /* Adjusted width */
+    max-width: 280px; /* Adjusted max-width */
+    height: 280px; /* Adjusted height to be square */
+    background-color: #e0e0e0; /* Grey background for upload area */
+    border-radius: 15px; /* Slightly rounded corners */
+    display: flex;
+    flex-direction: column; /* To stack text/image vertically */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure image doesn't overflow */
+    cursor: pointer;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1); /* Inner shadow for depth */
+    border: 2px solid rgba(255,255,255,0.5); /* Light border as in original */
+    transition: all 0.2s ease; /* Smooth transition for hover */
 }
 
 .image-upload-area:hover {
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
+    transform: scale(1.02); /* Slight scale on hover for interactivity */
 }
 
 .image-upload-area img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: all 0.5s ease;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures the image fits within the area without cropping */
 }
 
 #uploadPrompt {
-    color: #888;
-    font-size: 1.1em;
-    text-align: center;
-    transition: opacity 0.5s ease;
+    color: #888;
+    font-size: 1.1em;
+    text-align: center;
+    /* transition: opacity 0.5s ease; removed for direct display: none */
 }
 
 footer {
-    width: 100%;
-    background-color: var(--color-blue);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 30px 15px;
+    width: 100%;
+    background-color: #55acee; /* Bottom blue section */
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    padding: 20px 10px;
 }
 
 .button {
-    padding: 15px 30px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1em;
-    font-weight: bold;
-    color: var(--color-white);
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    background-size: 200% auto;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px; /* Rounded buttons */
+    font-size: 1.1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease; /* Faster transition for active state */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Button shadow */
 }
 
 .button:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
-    background-position: right center;
-    transform: translateY(-2px);
+    transform: translateY(-1px); /* Slight lift on hover */
+    box-shadow: 0 5px 8px rgba(0,0,0,0.25);
 }
 
 .button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px); /* Press down effect */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .upload-button {
-    background-image: linear-gradient(to right, var(--color-pink) 0%, var(--color-light-pink) 50%, var(--color-pink) 100%);
+    background-color: #ff9ad8; /* Pink */
+}
+
+.upload-button:hover {
+    background-color: #e087bd; /* Slightly darker pink on hover */
 }
 
 .supermasks-button {
-    background-image: linear-gradient(to right, var(--color-dark-blue) 0%, var(--color-blue) 50%, var(--color-dark-blue) 100%);
+    background-color: #4b8cdb; /* Blue */
+}
+
+.supermasks-button:hover {
+    background-color: #3b74b6; /* Slightly darker blue on hover */
 }
 
 .download-button {
-    background-image: linear-gradient(to right, var(--color-green) 0%, var(--color-light-green) 50%, var(--color-green) 100%);
-    color: var(--color-text-dark);
-    width: 100%;
-    max-width: 350px;
-    margin-top: 10px;
+    background-color: #b3e691; /* Green */
+    color: #333; /* Darker text for green button */
+    width: calc(100% - 40px); /* Full width minus padding for the download button */
+    max-width: 300px; /* Matched the max width from the image */
 }
 
+.download-button:hover {
+    background-color: #9cd17c; /* Slightly darker green on hover */
+}
+
+/* Status message styling */
 #statusMessage {
-    text-align: center;
-    margin-top: 20px;
-    font-weight: bold;
-    color: var(--color-text-dark);
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333; /* Default dark text */
+    min-height: 1.5em; /* Reserve space to prevent layout shifts */
+}
+
+
+/* Desktop-specific styles */
+@media (min-width: 768px) {
+    .container {
+        /* On desktop, make the container a fixed height for a framed look */
+        height: 800px; /* Example fixed height for desktop */
+        min-height: unset; /* Remove min-height override */
+        border-radius: 15px; /* Rounded corners for the entire desktop app container */
+        margin: 20px; /* Add some margin around the container on desktop */
+    }
+
+    /* Adjust main content padding or alignment if needed for desktop */
+    main {
+        padding: 40px 0; /* Slightly more vertical padding on desktop */
+    }
+
+    .image-upload-area {
+        max-width: 300px; /* Maintain image area size */
+        height: 300px;
+    }
+
+    footer {
+        padding: 30px 15px; /* Slightly more padding for footer */
+    }
+
+    .button {
+        width: auto; /* Buttons can be their natural width on desktop */
+        max-width: none; /* Remove max-width constraint */
+    }
+
+    .download-button {
+        width: 100%; /* Still full width for download button */
+        max-width: 350px; /* Can be slightly wider on desktop */
+    }
+}
+
+/* Ensure prompt disappears when image is loaded */
+.image-upload-area img[src="#"] + #uploadPrompt {
+    display: block; /* Show prompt if no image is loaded */
+}
+.image-upload-area img[src]:not([src="#"]) + #uploadPrompt {
+    display: none; /* Hide prompt if an image is loaded */
 }
