@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billions Supermasks</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billions Supermasks</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="billions-text">Billions</h1>
-            <h2 class="supermasks-text">Supermasks</h2>
-        </header>
+    <div class="container">
+        <header>
+            <h1 class="billions-text">Billions</h1>
+            <h2 class="supermasks-text">Supermasks</h2>
+        </header>
 
-        <main>
-            <div class="image-upload-area" id="imageUploadArea">
-                <img id="uploadedImage" src="#" alt="Upload your image" style="display: none;">
-                <p id="uploadPrompt">Click to upload image</p>
-                <input type="file" id="imageInput" accept="image/*" style="display: none;">
-            </div>
-        </main>
+        <main>
+            <div class="image-upload-area" id="imageUploadArea">
+                <img id="uploadedImage" src="#" alt="Upload your image" style="display: none;">
+                <p id="uploadPrompt">Click to upload image</p>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+        </main>
 
-        <footer>
-            <button class="button upload-button" id="uploadButton">Upload image</button>
-            <button class="button supermasks-button" id="supermasksButton">Supermasks</button>
-            <button class="button download-button" id="downloadButton">Download</button>
-        </footer>
-    </div>
+        <footer>
+            <button class="button upload-button" id="uploadButton">Upload image</button>
+            <button class="button supermasks-button" id="supermasksButton">Supermasks</button>
+            <button class="button download-button" id="downloadButton">Download</button>
+        </footer>
+        <p id="statusMessage"></p>
+    </div>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
