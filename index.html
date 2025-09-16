@@ -10,9 +10,8 @@
 
   <style>
     :root {
-      --pink: #ffb6e6;
-      --green: #b4f5d1;
-      --dark: #222;
+      --blue: #1e90ff;   /* gradient base color */
+      --dark: #111;
       --radius: 16px;
     }
 
@@ -23,7 +22,7 @@
       align-items: center;
       justify-content: center;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(90deg, var(--pink) 50%, var(--green) 50%);
+      background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
     }
 
@@ -59,7 +58,11 @@
       flex-wrap: wrap;
     }
 
-    button {
+    button,
+    .upload,
+    .supermasks,
+    .download,
+    .reset {
       padding: 8px 14px;
       font-size: 0.9rem;
       font-weight: 600;
@@ -67,16 +70,19 @@
       border-radius: var(--radius);
       cursor: pointer;
       transition: all 0.2s ease;
+      background: linear-gradient(180deg, #1e90ff, #4682b4) !important;
+      color: #fff !important;
     }
 
-    .upload { background: var(--pink); }
-    .supermasks { background: var(--green); }
-    .download { background: var(--dark); color: #fff; }
-    .reset { background: #f2f2f2; }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
 
-    button:hover {
-      opacity: 0.85;
-      transform: translateY(-1px);
+    button:hover:not(:disabled) {
+      box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
+      filter: brightness(1.08);
     }
 
     .frame {
@@ -92,7 +98,7 @@
       backdrop-filter: blur(10px);
       border: 3px solid rgba(255, 255, 255, 0.6);
       position: relative;
-      transition: border 0.2s ease, background 0.2s ease;
+      transition: border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s;
     }
 
     .frame.dragover {
@@ -131,9 +137,9 @@
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
       <button class="upload" id="btnUpload">Upload</button>
-      <button class="supermasks" id="btnMask">Supermasks</button>
-      <button class="download" id="btnDownload">Download</button>
-      <button class="reset" id="btnReset">Reset</button>
+      <button class="supermasks" id="btnMask" disabled>Supermasks</button>
+      <button class="download" id="btnDownload" disabled>Download</button>
+      <button class="reset" id="btnReset" disabled>Reset</button>
     </div>
 
     <!-- Frame with drag and drop -->
@@ -152,6 +158,13 @@
     const btnMask = document.getElementById('btnMask');
     const btnDownload = document.getElementById('btnDownload');
     const btnReset = document.getElementById('btnReset');
+
+    // enable/disable buttons
+    function toggleButtons(hasImage) {
+      btnMask.disabled = !hasImage;
+      btnDownload.disabled = !hasImage;
+      btnReset.disabled = !hasImage;
+    }
 
     // upload via button
     btnUpload.addEventListener('click', () => fileInput.click());
@@ -179,11 +192,25 @@
       }
     });
 
+    // load image and resize frame
     function loadImage(file) {
       const url = URL.createObjectURL(file);
       preview.src = url;
       preview.style.display = 'block';
       placeholder.style.display = 'none';
+      toggleButtons(true);
+
+      // Adjust frame to image aspect ratio
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        const aspectRatio = img.width / img.height;
+        const maxWidth = Math.min(460, window.innerWidth * 0.92);
+        const width = maxWidth;
+        const height = width / aspectRatio;
+        frame.style.width = width + 'px';
+        frame.style.height = height + 'px';
+      };
     }
 
     // mask toggle
@@ -209,7 +236,14 @@
       preview.classList.remove('masked');
       placeholder.style.display = 'block';
       fileInput.value = '';
+      toggleButtons(false);
+      // reset frame to square default
+      frame.style.width = 'min(460px, 92vw)';
+      frame.style.height = 'auto';
     });
+
+    // initial state
+    toggleButtons(false);
   </script>
 </body>
 </html>
