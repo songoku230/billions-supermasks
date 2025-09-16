@@ -69,16 +69,10 @@
       transition: all 0.2s ease;
     }
 
-    .upload {
-      background: var(--pink);
-    }
-    .supermasks {
-      background: var(--green);
-    }
-    .download {
-      background: var(--dark);
-      color: #fff;
-    }
+    .upload { background: var(--pink); }
+    .supermasks { background: var(--green); }
+    .download { background: var(--dark); color: #fff; }
+    .reset { background: #f2f2f2; }
 
     button:hover {
       opacity: 0.85;
@@ -133,12 +127,13 @@
       <span class="title-main">Supermasks</span>
     </h1>
 
-    <!-- Buttons now ABOVE the frame -->
+    <!-- Buttons above frame -->
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
       <button class="upload" id="btnUpload">Upload</button>
       <button class="supermasks" id="btnMask">Supermasks</button>
       <button class="download" id="btnDownload">Download</button>
+      <button class="reset" id="btnReset">Reset</button>
     </div>
 
     <!-- Frame with drag and drop -->
@@ -156,6 +151,7 @@
     const btnUpload = document.getElementById('btnUpload');
     const btnMask = document.getElementById('btnMask');
     const btnDownload = document.getElementById('btnDownload');
+    const btnReset = document.getElementById('btnReset');
 
     // upload via button
     btnUpload.addEventListener('click', () => fileInput.click());
@@ -171,7 +167,7 @@
       e.preventDefault();
       frame.classList.add('dragover');
     });
-    frame.addEventListener('dragleave', e => {
+    frame.addEventListener('dragleave', () => {
       frame.classList.remove('dragover');
     });
     frame.addEventListener('drop', e => {
@@ -179,9 +175,7 @@
       frame.classList.remove('dragover');
       if (e.dataTransfer.files.length) {
         const file = e.dataTransfer.files[0];
-        if (file.type.startsWith('image/')) {
-          loadImage(file);
-        }
+        if (file.type.startsWith('image/')) loadImage(file);
       }
     });
 
@@ -206,6 +200,15 @@
       link.href = preview.src;
       link.download = 'supermask.png';
       link.click();
+    });
+
+    // reset
+    btnReset.addEventListener('click', () => {
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+      preview.classList.remove('masked');
+      placeholder.style.display = 'block';
+      fileInput.value = '';
     });
   </script>
 </body>
