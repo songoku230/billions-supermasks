@@ -14,14 +14,13 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
   color: var(--dark);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .container {
   text-align: center;
@@ -29,119 +28,49 @@ body {
   width: 94%;
   padding: 20px;
 }
-h1 { margin: 0 0 16px; line-height: 1.2; }
-.title-top { display: block; font-weight: 400; font-size: 1.4rem; }
-.title-main { display: block; font-weight: 700; font-size: 2.6rem; }
+h1 { margin:0 0 16px; line-height:1.2; }
+.title-top { display:block; font-weight:400; font-size:1.4rem; }
+.title-main { display:block; font-weight:700; font-size:2.6rem; }
 .buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+  display:flex; justify-content:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;
 }
 button, .upload, .supermasks, .download, .reset {
-  padding: 8px 14px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: linear-gradient(180deg, #1e90ff, #4682b4) !important;
-  color: #fff !important;
+  padding:8px 14px; font-size:0.9rem; font-weight:600;
+  border:none; border-radius:var(--radius); cursor:pointer;
+  background: linear-gradient(180deg, #1e90ff, #4682b4); color:#fff;
 }
-button:hover { box-shadow: 0 0 8px rgba(30, 144, 255, 0.5); filter: brightness(1.08); }
+button:hover { box-shadow:0 0 8px rgba(30,144,255,0.5); filter:brightness(1.08);}
 .frame {
-  width: min(460px, 92vw);
-  aspect-ratio: 1/1;
-  margin: 0 auto 20px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(10px);
-  border: 3px solid rgba(255,255,255,0.6);
-  position: relative;
-  transition: border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s;
-}
-.frame.dragover {
-  border: 3px dashed var(--dark);
-  background: rgba(255,255,255,0.8);
+  width: min(460px,92vw); aspect-ratio:1/1; margin:0 auto 20px;
+  border-radius: var(--radius); overflow:hidden; display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.65); backdrop-filter: blur(10px);
+  border:3px solid rgba(255,255,255,0.6); position:relative;
 }
 #preview {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  position: absolute;
-  cursor: grab;
+  max-width:100%; max-height:100%; object-fit:contain; cursor:grab;
 }
 .placeholder {
-  width: 100%;
-  height: 100%;
-  border: 2px dashed rgba(0,0,0,0.1);
-  border-radius: var(--radius);
+  width:100%; height:100%; border:2px dashed rgba(0,0,0,0.1); border-radius:var(--radius);
 }
+.made-by { margin-top:10px; font-size:0.9rem; }
+.made-by a { color:#1e90ff; text-decoration:none; margin:0 6px; }
+.made-by a:hover { text-decoration:underline; }
 #right-panel {
-  position: fixed;
-  top: 50%;
-  right: 50px;
-  transform: translateY(-50%);
-  width: 300px;
-  height: 550px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 16px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  padding: 10px;
-  display: none;
-  z-index: 20;
-  flex-direction: column;
+  position:fixed; top:50%; right:50px; transform:translateY(-50%);
+  width:300px; height:550px; background:rgba(255,255,255,0.9);
+  border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2); padding:10px;
+  display:none; z-index:20; flex-direction:column;
 }
-#right-panel h3 {
-  margin: 0;
-  text-align: center;
-  font-weight: 600;
+#right-panel h3 { margin:0; text-align:center; font-weight:600; }
+#close-panel { position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
+#mask-list { flex:1; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:40px; overflow-y:auto; padding-bottom:10px; }
+#mask-list img { width:100%; cursor:pointer; border:2px solid transparent; border-radius:8px; object-fit:contain; }
+#mask-list img:hover { border-color:var(--blue);}
+#panel-reset { margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none;
+  background: linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer;
 }
-#close-panel {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-#mask-list {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 40px;
-  overflow-y: auto;
-  padding-bottom: 10px;
-}
-#mask-list img {
-  width: 100%;
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  object-fit: contain;
-}
-#mask-list img:hover {
-  border-color: var(--blue);
-}
-#panel-reset {
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: var(--radius);
-  border: none;
-  background: linear-gradient(180deg, #ff6347, #ff4500);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-}
-#panel-reset:hover { filter: brightness(1.1); }
+#panel-reset:hover { filter:brightness(1.1); }
+.mask-layer { position:absolute; top:0; left:0; width:100px; height:auto; cursor:pointer; touch-action:none; }
 </style>
 </head>
 <body>
@@ -176,6 +105,7 @@ button:hover { box-shadow: 0 0 8px rgba(30, 144, 255, 0.5); filter: brightness(1
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/dist/interact.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 const fileInput = document.getElementById('fileInput');
 const preview = document.getElementById('preview');
@@ -190,150 +120,106 @@ const closePanel = document.getElementById('close-panel');
 const maskList = document.getElementById('mask-list');
 const panelReset = document.getElementById('panel-reset');
 
-btnUpload.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
-
-frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
-frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
-frame.addEventListener('drop', e => {
-  e.preventDefault();
-  frame.classList.remove('dragover');
-  if(e.dataTransfer.files.length) {
+btnUpload.addEventListener('click',()=>fileInput.click());
+fileInput.addEventListener('change',e=>{if(e.target.files[0]) loadImage(e.target.files[0]);});
+frame.addEventListener('dragover', e=>{ e.preventDefault(); frame.classList.add('dragover'); });
+frame.addEventListener('dragleave', ()=>frame.classList.remove('dragover'));
+frame.addEventListener('drop', e=>{
+  e.preventDefault(); frame.classList.remove('dragover');
+  if(e.dataTransfer.files.length){
     const file = e.dataTransfer.files[0];
     if(file.type.startsWith('image/')) loadImage(file);
   }
 });
 
-function loadImage(file) {
+function loadImage(file){
   const url = URL.createObjectURL(file);
-  preview.src = url;
-  preview.style.display = 'block';
-  placeholder.style.display = 'none';
-  preview.style.zIndex = 1; // Image under masks
-  const img = new Image();
-  img.src = url;
-  img.onload = () => {
+  preview.src = url; preview.style.display='block';
+  placeholder.style.display='none';
+  const img = new Image(); img.src=url;
+  img.onload=()=>{
     const aspectRatio = img.width / img.height;
-    const maxWidth = Math.min(460, window.innerWidth * 0.92);
-    frame.style.width = maxWidth + 'px';
-    frame.style.height = maxWidth / aspectRatio + 'px';
+    const maxWidth = Math.min(460, window.innerWidth*0.92);
+    frame.style.width=maxWidth+'px';
+    frame.style.height=maxWidth/aspectRatio+'px';
   };
 }
 
-// Right panel
-btnMask.addEventListener('click', () => { rightPanel.style.display = 'flex'; });
-closePanel.addEventListener('click', () => { rightPanel.style.display = 'none'; });
+// Panel open/close
+btnMask.addEventListener('click',()=>{rightPanel.style.display='flex';});
+closePanel.addEventListener('click',()=>{rightPanel.style.display='none';});
 
-btnDownload.addEventListener('click', () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = frame.clientWidth;
-  canvas.height = frame.clientHeight;
-  const ctx = canvas.getContext('2d');
-  
-  // Draw uploaded image
-  if(preview.src) ctx.drawImage(preview, 0, 0, canvas.width, canvas.height);
-  
-  // Draw masks
-  document.querySelectorAll('.mask-layer').forEach(m => {
-    const rect = m.getBoundingClientRect();
-    const frameRect = frame.getBoundingClientRect();
-    const x = rect.left - frameRect.left;
-    const y = rect.top - frameRect.top;
-    ctx.save();
-    const centerX = x + rect.width/2;
-    const centerY = y + rect.height/2;
-    ctx.translate(centerX, centerY);
-    const angle = parseFloat(m.getAttribute('data-angle')) || 0;
-    ctx.rotate(angle * Math.PI / 180);
-    ctx.drawImage(m, -rect.width/2, -rect.height/2, rect.width, rect.height);
-    ctx.restore();
-  });
-  
-  const link = document.createElement('a');
-  link.href = canvas.toDataURL();
-  link.download = 'supermask.png';
-  link.click();
+// Reset
+btnReset.addEventListener('click',()=>{
+  preview.removeAttribute('src'); preview.style.display='none';
+  placeholder.style.display='block'; fileInput.value='';
+  document.querySelectorAll('.mask-layer').forEach(m=>m.remove());
 });
 
-btnReset.addEventListener('click', () => {
-  preview.removeAttribute('src');
-  preview.style.display = 'none';
-  placeholder.style.display = 'block';
-  fileInput.value = '';
-  frame.style.width = 'min(460px, 92vw)';
-  frame.style.height = 'auto';
-  document.querySelectorAll('.mask-layer').forEach(m => m.remove());
-});
-
-const masks = [];
-for(let i=1;i<=36;i++) masks.push(`masks/mask${i}.png`);
-
+// Masks list
+const masks=[];
+for(let i=1;i<=36;i++){masks.push(`masks/mask${i}.png`);}
 masks.forEach(src=>{
-  const img = document.createElement('img');
-  img.src = src;
-  img.addEventListener('click', ()=>addMask(src));
+  const img=document.createElement('img');
+  img.src=src; img.addEventListener('click',()=>addMask(src));
   maskList.appendChild(img);
 });
 
+// Add mask with interact
 function addMask(src){
   const mask = document.createElement('img');
-  mask.src = src;
-  mask.classList.add('mask-layer');
-  mask.style.position = 'absolute';
-  mask.style.top = '20px';
-  mask.style.left = '20px';
-  mask.style.width = '100px';
-  mask.style.height = 'auto';
-  mask.style.zIndex = 2; // above uploaded image
-  mask.setAttribute('data-angle', '0');
+  mask.src = src; mask.classList.add('mask-layer');
   frame.appendChild(mask);
 
   interact(mask)
-    .draggable({
-      listeners: { move: dragMoveListener }
-    })
-    .resizable({
-      edges: { left:true, right:true, top:true, bottom:true },
-      listeners: { move: resizeMoveListener },
-      modifiers: [interact.modifiers.restrictEdges({ outer: frame })],
-      inertia: true
-    })
-    .gesturable({
-      listeners: {
-        move(event) {
-          const angle = (parseFloat(mask.getAttribute('data-angle')) || 0) + event.da;
-          mask.style.transform = `rotate(${angle}deg) translate(${mask.getAttribute('data-x')||0}px, ${mask.getAttribute('data-y')||0}px)`;
-          mask.setAttribute('data-angle', angle);
-        }
-      }
-    });
+    .draggable({ listeners:{ move:dragMoveListener } })
+    .resizable({ edges:{left:true,right:true,top:true,bottom:true}, listeners:{move:resizeMoveListener} })
+    .gesturable({ listeners:{ move:gestureMoveListener } });
 }
 
-// Drag move listener
 function dragMoveListener(event){
-  const target = event.target;
-  const x = (parseFloat(target.getAttribute('data-x'))||0) + event.dx;
-  const y = (parseFloat(target.getAttribute('data-y'))||0) + event.dy;
-  const angle = parseFloat(target.getAttribute('data-angle'))||0;
-  target.style.transform = `rotate(${angle}deg) translate(${x}px, ${y}px)`;
-  target.setAttribute('data-x', x);
-  target.setAttribute('data-y', y);
+  const target=event.target;
+  const x=(parseFloat(target.getAttribute('data-x'))||0)+event.dx;
+  const y=(parseFloat(target.getAttribute('data-y'))||0)+event.dy;
+  target.style.transform=`translate(${x}px,${y}px) rotate(${parseFloat(target.getAttribute('data-rotate')||0)}deg)`;
+  target.setAttribute('data-x',x); target.setAttribute('data-y',y);
 }
 
-// Resize listener
 function resizeMoveListener(event){
-  const target = event.target;
-  const angle = parseFloat(target.getAttribute('data-angle'))||0;
-  target.style.width = event.rect.width+'px';
-  target.style.height = event.rect.height+'px';
-  const x = parseFloat(target.getAttribute('data-x'))||0;
-  const y = parseFloat(target.getAttribute('data-y'))||0;
-  target.style.transform = `rotate(${angle}deg) translate(${x}px, ${y}px)`;
+  const target=event.target;
+  target.style.width=event.rect.width+'px';
+  target.style.height=event.rect.height+'px';
+  const x=(parseFloat(target.getAttribute('data-x'))||0);
+  const y=(parseFloat(target.getAttribute('data-y'))||0);
+  target.style.transform=`translate(${x}px,${y}px) rotate(${parseFloat(target.getAttribute('data-rotate')||0)}deg)`;
 }
+
+function gestureMoveListener(event){
+  const target=event.target;
+  let currentRotation = parseFloat(target.getAttribute('data-rotate')||0);
+  currentRotation += event.da;
+  const x=(parseFloat(target.getAttribute('data-x'))||0);
+  const y=(parseFloat(target.getAttribute('data-y'))||0);
+  target.style.transform=`translate(${x}px,${y}px) rotate(${currentRotation}deg)`;
+  target.setAttribute('data-rotate',currentRotation);
+}
+
+// Download
+btnDownload.addEventListener('click',()=>{
+  html2canvas(frame).then(canvas=>{
+    const link=document.createElement('a');
+    link.href=canvas.toDataURL("image/png");
+    link.download='supermask.png';
+    link.click();
+  });
+});
 
 // Panel reset
-panelReset.addEventListener('click', () => {
-  document.querySelectorAll('.mask-layer').forEach(m => m.remove());
+panelReset.addEventListener('click',()=>{ document.querySelectorAll('.mask-layer').forEach(m=>m.remove()); });
+
+// Make uploaded image draggable
+interact(preview).draggable({
+  listeners:{ move:dragMoveListener }
 });
 </script>
 </body>
