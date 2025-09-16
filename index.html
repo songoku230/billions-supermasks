@@ -203,3 +203,89 @@
   </script>
 </body>
 </html>
+
+<!-- Add this inside the <body>, after the .container div -->
+
+<!-- Right Side Panel -->
+<div id="right-panel">
+  <button id="close-panel">✕</button>
+  <h3>Choose a Mask</h3>
+  <div id="mask-list"></div>
+</div>
+
+<style>
+  /* Right Panel Styles */
+  #right-panel {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 225px;       /* 9:16 width for Instagram Reels ratio */
+    height: 400px;      /* adjust to keep 9:16 ratio */
+    background: rgba(255, 255, 255, 0.8); /* transparent white */
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    padding: 10px;
+    display: none;       /* hidden by default */
+    z-index: 20;
+    overflow-y: auto;
+  }
+
+  /* Close button */
+  #close-panel {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* Mask thumbnails */
+  #mask-list img {
+    width: 80px;
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+  }
+  #mask-list img:hover {
+    border-color: var(--blue);
+  }
+</style>
+
+<script>
+  const rightPanel = document.getElementById('right-panel');
+  const closePanel = document.getElementById('close-panel');
+
+  // Open panel when Supermasks button is clicked
+  btnMask.addEventListener('click', () => {
+    if (!preview.src) return; // only if an image is loaded
+    rightPanel.style.display = 'block';
+  });
+
+  // Close panel when X is clicked
+  closePanel.addEventListener('click', () => {
+    rightPanel.style.display = 'none';
+  });
+
+  // Example mask list
+  const masks = [
+    '/assets/masks/mask1.png',
+    '/assets/masks/mask2.png',
+    '/assets/masks/mask3.png'
+  ];
+
+  const maskList = document.getElementById('mask-list');
+
+  masks.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.addEventListener('click', () => {
+      // TODO: Add mask on top of preview here
+      console.log('Mask selected:', src);
+    });
+    maskList.appendChild(img);
+  });
+</script>
