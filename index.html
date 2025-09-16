@@ -13,14 +13,15 @@
     }
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
-      overflow: hidden;
+      overflow-y: auto; /* allow scrolling */
     }
     .container {
       text-align: center;
@@ -113,19 +114,17 @@
     #right-panel {
       position: fixed;
       top: 50%;
-      right: 40px;               /* slightly right of center */
+      right: 50px; /* slightly right of center */
       transform: translateY(-50%);
-      width: 160px;               /* narrow vertical panel */
-      height: 355px;              /* 9:20 ratio */
+      width: 180px;
+      height: 360px; /* adjusted for 9:20 ratio */
       background: rgba(255,255,255,0.8);
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
+      display: none;
       z-index: 20;
       overflow-y: auto;
-      display: none;              /* hidden by default */
-      flex-direction: column;
-      align-items: center;
     }
     #close-panel {
       position: absolute;
@@ -139,28 +138,18 @@
     #mask-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      margin-top: 30px;
       align-items: center;
+      gap: 10px;
+      margin-top: 30px;
     }
     #mask-list img {
-      width: 80%;
+      width: 120px;
+      cursor: pointer;
       border: 2px solid transparent;
       border-radius: 8px;
-      cursor: pointer;
     }
     #mask-list img:hover {
       border-color: var(--blue);
-    }
-    /* Draggable masks inside frame */
-    .mask-layer {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 100px;
-      height: auto;
-      z-index: 5;
     }
   </style>
 </head>
@@ -217,7 +206,6 @@
       const file = e.target.files[0];
       if(file) loadImage(file);
     });
-
     frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
     frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
     frame.addEventListener('drop', e => {
@@ -246,12 +234,10 @@
       };
     }
 
-    // Show panel only when user clicks Supermasks
+    // Open panel on Supermasks click even if no image uploaded
     btnMask.addEventListener('click', () => {
-      if(!preview.src) return;
-      rightPanel.style.display = 'flex';
+      rightPanel.style.display = 'block';
     });
-
     closePanel.addEventListener('click', () => {
       rightPanel.style.display = 'none';
     });
@@ -275,11 +261,12 @@
       document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
-    // Masks array
+    // Example masks
     const masks = [
       '/assets/masks/mask1.png',
       '/assets/masks/mask2.png',
-      '/assets/masks/mask3.png'
+      '/assets/masks/mask3.png',
+      '/assets/masks/mask4.png'
     ];
 
     masks.forEach(src => {
@@ -293,6 +280,12 @@
       const mask = document.createElement('img');
       mask.src = src;
       mask.classList.add('mask-layer');
+      mask.style.position = 'absolute';
+      mask.style.top = '20px';
+      mask.style.left = '20px';
+      mask.style.width = '100px';
+      mask.style.height = 'auto';
+      mask.style.zIndex = '5';
       frame.appendChild(mask);
 
       interact(mask)
