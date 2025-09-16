@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mask Resizer Webapp</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Billions Supermasks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --blue: #1e90ff;
+      --dark: #111;
       --radius: 16px;
-      --dark: #222;
     }
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -19,115 +20,248 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      overflow: auto; /* 🔥 app scrollable */
     }
-
-    h1 {
-      margin: 20px;
-      font-size: 1.6rem;
+    .container {
       text-align: center;
+      max-width: 720px;
+      width: 94%;
+      padding: 20px;
     }
+    h1 { margin: 0 0 16px; line-height: 1.2; }
+    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
+    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: linear-gradient(180deg, #1e90ff, #4682b4);
+      color: #fff;
+    }
+    button:hover { filter: brightness(1.08); }
 
     .frame {
+      width: min(460px, 92vw);
+      height: 460px;
       margin: 0 auto 20px;
       border-radius: var(--radius);
       background: rgba(255,255,255,0.65);
       border: 3px solid rgba(255,255,255,0.6);
-      position: relative;
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
-      overflow: hidden; /* scroll nahi, sirf body scroll karegi */
+      overflow: auto; /* 🔥 Scroll enable */
     }
-
-    #preview, .mask-layer {
-      position: absolute;
-      cursor: grab;
-      user-select: none;
+    canvas {
+      display: block;
+      border-radius: var(--radius);
     }
+    .made-by {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .made-by a {
+      color: #1e90ff;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+    .made-by a:hover { text-decoration: underline; }
 
-    .resizer {
-      border: 2px dashed #3498db;
-      position: absolute;
-      pointer-events: none;
+    #right-panel {
+      position: fixed;
+      top: 50%;
+      right: 50px;
+      transform: translateY(-50%);
+      width: 300px;
+      height: 550px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 10px;
       display: none;
+      z-index: 20;
+      flex-direction: column;
     }
-
-    .resizer .handle {
-      width: 8px;
-      height: 8px;
-      background: #3498db;
-      border-radius: 50%;
+    #right-panel h3 { margin: 0; text-align: center; font-weight: 600; }
+    #close-panel {
       position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
-
-    .resizer .handle.nw { top: -4px; left: -4px; cursor: nwse-resize; }
-    .resizer .handle.ne { top: -4px; right: -4px; cursor: nesw-resize; }
-    .resizer .handle.sw { bottom: -4px; left: -4px; cursor: nesw-resize; }
-    .resizer .handle.se { bottom: -4px; right: -4px; cursor: nwse-resize; }
+    #mask-list {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 40px;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: #1e90ff rgba(0,0,0,0.1);
+      padding-bottom: 10px;
+    }
+    #mask-list img {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    #mask-list img:hover { border: 2px solid var(--blue); }
+    #panel-reset {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(180deg, #ff6347, #ff4500);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h1>🎭 Mask Resizer Webapp</h1>
-
-  <div id="frame" class="frame" style="width:460px; height:460px;">
-    <img id="preview" style="display:none;" />
-    <div id="placeholder" style="margin:auto; color:#555;">Upload an Image</div>
-    <div id="resizer" class="resizer">
-      <div class="handle nw"></div>
-      <div class="handle ne"></div>
-      <div class="handle sw"></div>
-      <div class="handle se"></div>
+  <div class="container">
+    <h1>
+      <span class="title-top">Billions</span>
+      <span class="title-main">Supermasks</span>
+    </h1>
+    <div class="buttons">
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <button id="btnUpload">Upload</button>
+      <button id="btnMask">Supermasks</button>
+      <button id="btnDownload">Download</button>
+      <button id="btnReset">Reset</button>
+    </div>
+    <div class="frame" id="frame">
+      <canvas id="editorCanvas"></canvas>
+    </div>
+    <div class="made-by">
+      Made by: 
+      <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
+      <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
     </div>
   </div>
 
-  <input type="file" id="upload" accept="image/*">
-  <button id="downloadBtn">Download</button>
+  <div id="right-panel">
+    <button id="close-panel">✕</button>
+    <h3>Choose a Mask</h3>
+    <div id="mask-list"></div>
+    <button id="panel-reset">Reset Panel</button>
+  </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <script>
-    const upload = document.getElementById("upload");
-    const preview = document.getElementById("preview");
-    const placeholder = document.getElementById("placeholder");
-    const frame = document.getElementById("frame");
-    const resizer = document.getElementById("resizer");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const canvas = new fabric.Canvas('editorCanvas', {
+      preserveObjectStacking: true,
+      selection: true
+    });
 
-    // load image and adjust frame size
-    function loadImage(file) {
-      const url = URL.createObjectURL(file);
-      const img = new Image();
-      img.onload = function() {
-        preview.src = url;
-        preview.style.display = 'block';
-        placeholder.style.display = 'none';
+    // 🔹 Resize handles setup
+    fabric.Object.prototype.transparentCorners = false;
+    fabric.Object.prototype.cornerColor = '#1e90ff';
+    fabric.Object.prototype.cornerStyle = 'circle';
+    fabric.Object.prototype.cornerSize = 8;
 
-        // 🔥 frame size = image size
-        frame.style.width = img.width + 'px';
-        frame.style.height = img.height + 'px';
+    const fileInput = document.getElementById('fileInput');
+    const btnUpload = document.getElementById('btnUpload');
+    const btnMask = document.getElementById('btnMask');
+    const btnDownload = document.getElementById('btnDownload');
+    const btnReset = document.getElementById('btnReset');
+    const rightPanel = document.getElementById('right-panel');
+    const closePanel = document.getElementById('close-panel');
+    const maskList = document.getElementById('mask-list');
+    const panelReset = document.getElementById('panel-reset');
 
-        preview.style.width = img.width + 'px';
-        preview.style.height = img.height + 'px';
-        preview.style.top = '0';
-        preview.style.left = '0';
-      };
-      img.src = url;
-    }
+    let userImage = null;
 
-    upload.addEventListener("change", (e) => {
-      if (e.target.files.length > 0) {
-        loadImage(e.target.files[0]);
+    // Upload image
+    btnUpload.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+      if (e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(f) {
+          fabric.Image.fromURL(f.target.result, function(img) {
+            if (userImage) canvas.remove(userImage);
+
+            // 🔥 Set canvas to image natural size
+            canvas.setWidth(img.width);
+            canvas.setHeight(img.height);
+
+            img.set({ selectable: false });
+            userImage = img;
+            canvas.add(img);
+            canvas.sendToBack(img);
+            canvas.renderAll();
+          }, { crossOrigin: 'anonymous' });
+        };
+        reader.readAsDataURL(e.target.files[0]);
       }
     });
 
-    // ✅ Simple download same as preview
-    downloadBtn.addEventListener("click", () => {
-      const link = document.createElement("a");
-      link.download = "edited.png";
-      link.href = preview.src;
+    // Panel
+    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
+    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
+
+    // Reset
+    btnReset.addEventListener('click', () => {
+      canvas.clear();
+      userImage = null;
+      fileInput.value = '';
+    });
+
+    // Download
+    btnDownload.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'supermask.png';
       link.click();
     });
 
-    // ⚡ TODO: yahan pe tu apne 36 masks + resizer ka code add karega
+    // Load masks
+    const masks = [];
+    for (let i = 1; i <= 12; i++) { // change to 36 if needed
+      masks.push(`masks/mask${i}.png`);
+    }
+
+    masks.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.addEventListener('click', () => {
+        fabric.Image.fromURL(src, function(mask) {
+          mask.set({
+            left: 50,
+            top: 50,
+            scaleX: 0.3,
+            scaleY: 0.3
+          });
+          canvas.add(mask);
+          canvas.setActiveObject(mask);
+          canvas.renderAll();
+        }, { crossOrigin: 'anonymous' });
+      });
+      maskList.appendChild(img);
+    });
+
+    // Panel reset (remove all masks)
+    panelReset.addEventListener('click', () => {
+      canvas.getObjects().forEach(obj => {
+        if (obj !== userImage) canvas.remove(obj);
+      });
+    });
   </script>
 </body>
 </html>
