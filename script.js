@@ -79,3 +79,64 @@ btnReset.addEventListener('click', () => {
   frame.style.width = 'min(460px, 92vw)';
   frame.style.height = 'auto';
 });
+
+// Toggle Right Panel
+document.getElementById('btn-right').onclick = () => {
+  document.getElementById('right-panel').classList.toggle('open');
+};
+
+// List of masks
+const masks = [
+  '/assets/masks/mask1.png',
+  '/assets/masks/mask2.png',
+  '/assets/masks/mask3.png'
+];
+
+const maskList = document.getElementById('mask-list');
+
+// Display masks in the panel
+masks.forEach(src => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.addEventListener('click', () => addMaskToCanvas(src));
+  maskList.appendChild(img);
+});
+
+// Add mask to canvas
+function addMaskToCanvas(src) {
+  const canvas = document.getElementById('canvas-container');
+  const mask = document.createElement('img');
+  mask.src = src;
+  mask.classList.add('mask-layer');
+  mask.style.top = '50px';
+  mask.style.left = '50px';
+  canvas.appendChild(mask);
+
+  // Make mask draggable & resizable using Interact.js
+  interact(mask).draggable({
+    modifiers: [interact.modifiers.restrictRect({ restriction: canvas })],
+    listeners: { move: dragMoveListener }
+  }).resizable({
+    edges: { left:true, right:true, bottom:true, top:true },
+    listeners: { move: resizeMoveListener },
+    modifiers: [interact.modifiers.restrictEdges({ outer: canvas })]
+  });
+}
+
+// Drag function
+function dragMoveListener(event) {
+  const target = event.target;
+  const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+  const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+  target.style.transform = `translate(${x}px, ${y}px)`;
+  target.setAttribute('data-x', x);
+  target.setAttribute('data-y', y);
+}
+
+// Resize function
+function resizeMoveListener(event) {
+  const target = event.target;
+  target.style.width = event.rect.width + 'px';
+  target.style.height = event.rect.height + 'px';
+}
+
