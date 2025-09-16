@@ -74,13 +74,7 @@
     .download { background: var(--dark); color: #fff; }
     .reset { background: #f2f2f2; }
 
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-
-    button:hover:not(:disabled) {
+    button:hover {
       opacity: 0.85;
       transform: translateY(-1px);
     }
@@ -137,9 +131,9 @@
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
       <button class="upload" id="btnUpload">Upload</button>
-      <button class="supermasks" id="btnMask" disabled>Supermasks</button>
-      <button class="download" id="btnDownload" disabled>Download</button>
-      <button class="reset" id="btnReset" disabled>Reset</button>
+      <button class="supermasks" id="btnMask">Supermasks</button>
+      <button class="download" id="btnDownload">Download</button>
+      <button class="reset" id="btnReset">Reset</button>
     </div>
 
     <!-- Frame with drag and drop -->
@@ -158,13 +152,6 @@
     const btnMask = document.getElementById('btnMask');
     const btnDownload = document.getElementById('btnDownload');
     const btnReset = document.getElementById('btnReset');
-
-    // enable buttons once image is loaded
-    function toggleButtons(hasImage) {
-      btnMask.disabled = !hasImage;
-      btnDownload.disabled = !hasImage;
-      btnReset.disabled = !hasImage;
-    }
 
     // upload via button
     btnUpload.addEventListener('click', () => fileInput.click());
@@ -197,7 +184,6 @@
       preview.src = url;
       preview.style.display = 'block';
       placeholder.style.display = 'none';
-      toggleButtons(true);
     }
 
     // mask toggle
@@ -223,11 +209,7 @@
       preview.classList.remove('masked');
       placeholder.style.display = 'block';
       fileInput.value = '';
-      toggleButtons(false);
     });
-
-    // initial state
-    toggleButtons(false);
   </script>
 </body>
 </html>
