@@ -6,99 +6,45 @@
   <title>Billions Supermasks</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --blue: #1e90ff;
-      --dark: #111;
-      --radius: 16px;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
-      color: var(--dark);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .container { text-align: center; max-width: 720px; width: 94%; padding: 20px; }
-    h1 { margin: 0 0 16px; line-height: 1.2; }
-    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
-    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
-    .buttons { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-    button {
-      padding: 8px 14px; font-size: 0.9rem; font-weight: 600; border: none; border-radius: var(--radius);
-      cursor: pointer; transition: all 0.2s ease; background: linear-gradient(180deg, #1e90ff, #4682b4); color: #fff;
-    }
-    button:hover { filter: brightness(1.08); }
-    .frame {
-      width: min(460px, 92vw); aspect-ratio: 1/1; margin: 0 auto 20px;
-      border-radius: var(--radius); overflow: hidden; position: relative;
-      background: rgba(255,255,255,0.65); border: 3px solid rgba(255,255,255,0.6);
-      display: flex; align-items: center; justify-content: center;
-    }
-    #preview, .mask-layer {
-      position: absolute; top: 0; left: 0; cursor: grab; user-select: none;
-    }
-    .placeholder {
-      width: 100%; height: 100%; border: 2px dashed rgba(0,0,0,0.1); border-radius: var(--radius);
-    }
-    .made-by { margin-top: 10px; font-size: 0.9rem; }
-    .made-by a { color: #1e90ff; text-decoration: none; margin: 0 6px; }
-    .made-by a:hover { text-decoration: underline; }
+    :root{--blue:#1e90ff;--dark:#111;--radius:16px;}
+    body{margin:0;min-height:100vh;font-family:'Poppins',sans-serif;background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%);color:var(--dark);overflow-y:auto;display:flex;flex-direction:column;align-items:center;}
+    .container{text-align:center;max-width:720px;width:94%;padding:20px;}
+    h1{margin:0 0 16px;line-height:1.2;}
+    .title-top{display:block;font-weight:400;font-size:1.4rem;}
+    .title-main{display:block;font-weight:700;font-size:2.6rem;}
+    .buttons{display:flex;justify-content:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+    button{padding:8px 14px;font-size:0.9rem;font-weight:600;border:none;border-radius:var(--radius);cursor:pointer;transition:all .2s ease;background:linear-gradient(180deg,#1e90ff,#4682b4);color:#fff;}
+    button:hover{filter:brightness(1.08);}
+    .frame{width:min(460px,92vw);aspect-ratio:1/1;margin:0 auto 20px;border-radius:var(--radius);overflow:hidden;position:relative;background:rgba(255,255,255,0.65);border:3px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;}
+    #preview,.mask-layer{position:absolute;top:0;left:0;cursor:grab;user-select:none;}
+    .placeholder{width:100%;height:100%;border:2px dashed rgba(0,0,0,0.1);border-radius:var(--radius);}
+    .made-by{margin-top:10px;font-size:0.9rem;}
+    .made-by a{color:#1e90ff;text-decoration:none;margin:0 6px;}
+    .made-by a:hover{text-decoration:underline;}
+    #right-panel{position:fixed;top:50%;right:50px;transform:translateY(-50%);width:300px;height:550px;background:rgba(255,255,255,0.9);border-radius:16px;box-shadow:0 0 15px rgba(0,0,0,0.2);padding:10px;display:none;z-index:100;flex-direction:column;}
+    #right-panel h3{margin:0;text-align:center;font-weight:600;}
+    #close-panel{position:absolute;top:8px;right:8px;background:none;border:none;font-size:1.2rem;cursor:pointer;}
+    #mask-list{flex:1;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:40px;overflow-y:scroll;scrollbar-width:thin;scrollbar-color:#1e90ff rgba(0,0,0,0.1);padding-bottom:10px;}
+    #mask-list img{width:100%;cursor:pointer;border-radius:8px;object-fit:contain;}
+    #mask-list img:hover{border-color:var(--blue);}
+    #panel-reset{margin-top:10px;padding:6px 12px;border-radius:var(--radius);border:none;background:linear-gradient(180deg,#ff6347,#ff4500);color:#fff;font-weight:600;cursor:pointer;}
 
-    #right-panel {
-      position: fixed; top: 50%; right: 50px; transform: translateY(-50%);
-      width: 300px; height: 550px; background: rgba(255,255,255,0.9);
-      border-radius: 16px; box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      padding: 10px; display: none; z-index: 20; flex-direction: column;
-    }
-    #right-panel h3 { margin: 0; text-align: center; font-weight: 600; }
-    #close-panel { position: absolute; top: 8px; right: 8px; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
-    #mask-list {
-      flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-      margin-top: 40px; overflow-y: scroll; scrollbar-width: thin;
-      scrollbar-color: #1e90ff rgba(0,0,0,0.1); padding-bottom: 10px;
-    }
-    #mask-list::-webkit-scrollbar { width: 8px; }
-    #mask-list::-webkit-scrollbar-thumb { background-color: #1e90ff; border-radius: 4px; }
-    #mask-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
-    #mask-list img { width: 100%; cursor: pointer; border-radius: 8px; object-fit: contain; }
-    #mask-list img:hover { border-color: var(--blue); }
-    #panel-reset {
-      margin-top: 10px; padding: 6px 12px; border-radius: var(--radius); border: none;
-      background: linear-gradient(180deg, #ff6347, #ff4500); color: #fff; font-weight: 600; cursor: pointer;
-    }
-
-    /* 🔵 Resizer styles */
-    #resizer {
-      position: absolute;
-      border: 2px solid #1e90ff;
-      display: none;
-      z-index: 15;
-      pointer-events: none;
-    }
-    .handle {
-      width: 10px; height: 10px; background: #1e90ff;
-      position: absolute; border-radius: 2px; pointer-events: all;
-    }
-    .handle.tl { top: -5px; left: -5px; cursor: nwse-resize; }
-    .handle.tr { top: -5px; right: -5px; cursor: nesw-resize; }
-    .handle.bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
-    .handle.br { bottom: -5px; right: -5px; cursor: nwse-resize; }
-    .handle.tm { top: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
-    .handle.bm { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
-    .handle.ml { left: -5px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
-    .handle.mr { right: -5px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    /* Resizer */
+    #resizer{position:absolute;border:2px solid var(--blue);display:none;z-index:200;pointer-events:none;box-sizing:border-box;}
+    .handle{width:10px;height:10px;background:var(--blue);position:absolute;border-radius:2px;pointer-events:all;box-sizing:border-box;}
+    .handle.tl{top:-5px;left:-5px;cursor:nwse-resize;}
+    .handle.tr{top:-5px;right:-5px;cursor:nesw-resize;}
+    .handle.bl{bottom:-5px;left:-5px;cursor:nesw-resize;}
+    .handle.br{bottom:-5px;right:-5px;cursor:nwse-resize;}
+    .handle.tm{top:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize;}
+    .handle.bm{bottom:-5px;left:50%;transform:translateX(-50%);cursor:ns-resize;}
+    .handle.ml{left:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize;}
+    .handle.mr{right:-5px;top:50%;transform:translateY(-50%);cursor:ew-resize;}
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>
-    <span class="title-top">Billions</span>
-    <span class="title-main">Supermasks</span>
-  </h1>
+  <h1><span class="title-top">Billions</span><span class="title-main">Supermasks</span></h1>
   <div class="buttons">
     <input type="file" id="fileInput" accept="image/*" hidden>
     <button id="btnUpload">Upload</button>
@@ -106,10 +52,11 @@
     <button id="btnDownload">Download</button>
     <button id="btnReset">Reset</button>
   </div>
+
   <div class="frame" id="frame">
     <div class="placeholder" id="placeholder"></div>
     <img id="preview" alt="">
-    <!-- 🔵 Universal Resizer Box -->
+    <!-- Resizer -->
     <div id="resizer">
       <div class="handle tl"></div>
       <div class="handle tr"></div>
@@ -121,6 +68,7 @@
       <div class="handle mr"></div>
     </div>
   </div>
+
   <div class="made-by">
     Made by:
     <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
@@ -135,8 +83,12 @@
   <button id="panel-reset">Reset Panel</button>
 </div>
 
+<!-- keep InteractJS + html2canvas -->
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script>
+/* ---------- DOM refs ---------- */
 const fileInput = document.getElementById('fileInput');
 const preview = document.getElementById('preview');
 const placeholder = document.getElementById('placeholder');
@@ -149,10 +101,11 @@ const rightPanel = document.getElementById('right-panel');
 const closePanel = document.getElementById('close-panel');
 const maskList = document.getElementById('mask-list');
 const panelReset = document.getElementById('panel-reset');
-const resizerBox = document.getElementById("resizer");
+const resizerBox = document.getElementById('resizer');
+
 let selectedMask = null;
 
-// Upload user image
+/* ---------- Upload ---------- */
 btnUpload.addEventListener('click', ()=>fileInput.click());
 fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
 function loadImage(file){
@@ -166,19 +119,19 @@ function loadImage(file){
   preview.style.left = '0';
 }
 
-// Panel
+/* ---------- Panel ---------- */
 btnMask.addEventListener('click', ()=>rightPanel.style.display='flex');
 closePanel.addEventListener('click', ()=>rightPanel.style.display='none');
 
-// Reset
+/* ---------- Reset ---------- */
 btnReset.addEventListener('click', ()=>{
   preview.removeAttribute('src'); preview.style.display='none';
   placeholder.style.display='block'; fileInput.value='';
   document.querySelectorAll('.mask-layer').forEach(m=>m.remove());
-  resizerBox.style.display = "none";
+  hideResizer();
 });
 
-// Download
+/* ---------- Download ---------- */
 btnDownload.addEventListener('click', ()=>{
   html2canvas(frame).then(canvas=>{
     const link=document.createElement('a');
@@ -188,9 +141,9 @@ btnDownload.addEventListener('click', ()=>{
   });
 });
 
-// Masks
+/* ---------- Masks list (relative path) ---------- */
 const masks=[];
-for(let i=1;i<=36;i++) masks.push(`masks/mask${i}.png`);
+for(let i=1;i<=36;i++) masks.push(`./masks/mask${i}.png`);
 masks.forEach(src=>{
   const img=document.createElement('img');
   img.src=src;
@@ -198,87 +151,228 @@ masks.forEach(src=>{
   maskList.appendChild(img);
 });
 
-// Add mask
-function addMask(src){
-  const mask=document.createElement('img');
-  mask.src=src;
-  mask.classList.add('mask-layer');
-  mask.style.width='100px';
-  mask.style.top='20px';
-  mask.style.left='20px';
-  frame.appendChild(mask);
-
-  // click select
-  mask.addEventListener("click", e => {
-    e.stopPropagation();
-    selectMask(mask);
-  });
-}
-
-// Mask select
-function selectMask(mask) {
-  selectedMask = mask;
+/* ---------- Utility: update resizer position/size relative to frame ---------- */
+function updateResizerFor(mask){
+  if(!mask) { hideResizer(); return; }
   const rect = mask.getBoundingClientRect();
   const frameRect = frame.getBoundingClientRect();
-
-  resizerBox.style.display = "block";
-  resizerBox.style.width = rect.width + "px";
-  resizerBox.style.height = rect.height + "px";
-  resizerBox.style.left = (rect.left - frameRect.left) + "px";
-  resizerBox.style.top = (rect.top - frameRect.top) + "px";
+  resizerBox.style.display = 'block';
+  resizerBox.style.width = rect.width + 'px';
+  resizerBox.style.height = rect.height + 'px';
+  resizerBox.style.left = (rect.left - frameRect.left) + 'px';
+  resizerBox.style.top = (rect.top - frameRect.top) + 'px';
 }
 
-// Deselect on empty click
-frame.addEventListener("click", e => {
-  if (!e.target.classList.contains("mask-layer")) {
-    selectedMask = null;
-    resizerBox.style.display = "none";
+/* ---------- Select / Deselect ---------- */
+function selectMask(mask){
+  selectedMask = mask;
+  updateResizerFor(mask);
+  // bring selected mask to top z-order visually
+  document.querySelectorAll('.mask-layer').forEach(m=>m.style.zIndex='10');
+  mask.style.zIndex = '50';
+}
+
+function hideResizer(){
+  resizerBox.style.display = 'none';
+  selectedMask = null;
+}
+
+/* deselect when clicking empty area (frame) */
+frame.addEventListener('click', e => {
+  if(!e.target.classList.contains('mask-layer')) hideResizer();
+});
+
+/* ---------- Add mask and InteractJS behaviour ---------- */
+function addMask(src){
+  const mask = document.createElement('img');
+  mask.src = src;
+  mask.classList.add('mask-layer');
+  mask.style.width = '100px';
+  mask.style.height = 'auto';
+  mask.style.top = '20px';
+  mask.style.left = '20px';
+  // initialize transform data storage
+  mask.setAttribute('data-x', 0);
+  mask.setAttribute('data-y', 0);
+  mask.setAttribute('data-rotate', 0);
+
+  frame.appendChild(mask);
+
+  // click to select
+  mask.addEventListener('click', e => { e.stopPropagation(); selectMask(mask); });
+
+  // Interact: draggable / resizable / gesturable
+  interact(mask)
+    .draggable({
+      listeners: { move: dragMoveListener },
+    })
+    .resizable({
+      edges: { left:true, right:true, top:true, bottom:true },
+      listeners: { move: resizeMoveListener },
+      preserveAspectRatio: true
+    })
+    .gesturable({
+      listeners: { move: gestureMoveListener }
+    });
+}
+
+/* ---------- Interact listeners (modified to update resizer) ---------- */
+function dragMoveListener(event){
+  const target = event.target;
+  const x = (parseFloat(target.getAttribute('data-x'))||0) + event.dx;
+  const y = (parseFloat(target.getAttribute('data-y'))||0) + event.dy;
+  const rotate = parseFloat(target.getAttribute('data-rotate')||0) || 0;
+  target.style.transform = `translate(${x}px,${y}px) rotate(${rotate}deg)`;
+  target.setAttribute('data-x', x);
+  target.setAttribute('data-y', y);
+
+  if(selectedMask === target) updateResizerFor(target);
+}
+
+function resizeMoveListener(event){
+  const target = event.target;
+
+  // event.rect gives new size (unrotated box)
+  target.style.width = event.rect.width + 'px';
+  target.style.height = event.rect.height + 'px';
+
+  // Interact can provide deltaRect.left/top when resizing from left/top edges to shift element
+  const dx = event.deltaRect ? event.deltaRect.left : 0;
+  const dy = event.deltaRect ? event.deltaRect.top : 0;
+
+  // When event provides deltaRect, we should adjust the element's base left/top (not the transform)
+  // Compute current translate (data-x/data-y) and base left/top
+  const currentX = parseFloat(target.getAttribute('data-x')||0);
+  const currentY = parseFloat(target.getAttribute('data-y')||0);
+  const frameRect = frame.getBoundingClientRect();
+  const rect = target.getBoundingClientRect();
+  const baseLeft = rect.left - frameRect.left - currentX;
+  const baseTop = rect.top - frameRect.top - currentY;
+
+  // Apply adjustments from deltaRect (these are in px; left/top adjustments move the element)
+  // If deltaRect not provided, dx/dy will be 0
+  if(dx || dy){
+    const newLeft = baseLeft + dx;
+    const newTop = baseTop + dy;
+    target.style.left = newLeft + 'px';
+    target.style.top = newTop + 'px';
   }
+
+  if(selectedMask === target) updateResizerFor(target);
+}
+
+function gestureMoveListener(event){
+  const target = event.target;
+  const current = parseFloat(target.getAttribute('data-rotate')||0) || 0;
+  const newRotation = current + event.da;
+  const x = parseFloat(target.getAttribute('data-x')||0) || 0;
+  const y = parseFloat(target.getAttribute('data-y')||0) || 0;
+  target.style.transform = `translate(${x}px,${y}px) rotate(${newRotation}deg)`;
+  target.setAttribute('data-rotate', newRotation);
+
+  if(selectedMask === target) updateResizerFor(target);
+}
+
+/* ---------- Custom resizer handles logic (preserve aspect ratio) ---------- */
+document.querySelectorAll("#resizer .handle").forEach(handle=>{
+  handle.addEventListener('mousedown', startHandleResize);
 });
 
-// Handle drag-resize
-document.querySelectorAll("#resizer .handle").forEach(handle => {
-  handle.addEventListener("mousedown", e => {
-    e.preventDefault();
-    if (!selectedMask) return;
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const startWidth = selectedMask.offsetWidth;
-    const startHeight = selectedMask.offsetHeight;
+function startHandleResize(e){
+  e.preventDefault();
+  if(!selectedMask) return;
+  const handle = e.currentTarget;
+  const handleClass = [...handle.classList].find(c => ['tl','tr','bl','br','tm','bm','ml','mr'].includes(c));
+  const startX = e.clientX;
+  const startY = e.clientY;
+  const frameRect = frame.getBoundingClientRect();
+  const maskRect = selectedMask.getBoundingClientRect();
 
-    function onMouseMove(ev) {
-      let newWidth = startWidth;
-      let newHeight = startHeight;
+  // Current translate
+  const curTx = parseFloat(selectedMask.getAttribute('data-x')||0);
+  const curTy = parseFloat(selectedMask.getAttribute('data-y')||0);
 
-      if (handle.classList.contains("mr")) newWidth += ev.clientX - startX;
-      if (handle.classList.contains("ml")) newWidth -= ev.clientX - startX;
-      if (handle.classList.contains("bm")) newHeight += ev.clientY - startY;
-      if (handle.classList.contains("tm")) newHeight -= ev.clientY - startY;
-      if (handle.classList.contains("br")) { newWidth += ev.clientX - startX; newHeight += ev.clientY - startY; }
-      if (handle.classList.contains("bl")) { newWidth -= ev.clientX - startX; newHeight += ev.clientY - startY; }
-      if (handle.classList.contains("tr")) { newWidth += ev.clientX - startX; newHeight -= ev.clientY - startY; }
-      if (handle.classList.contains("tl")) { newWidth -= ev.clientX - startX; newHeight -= ev.clientY - startY; }
+  // base left/top (without translate)
+  const baseLeft = maskRect.left - frameRect.left - curTx;
+  const baseTop = maskRect.top - frameRect.top - curTy;
 
-      if (newWidth > 20) selectedMask.style.width = newWidth + "px";
-      if (newHeight > 20) selectedMask.style.height = newHeight + "px";
+  const startWidth = maskRect.width;
+  const startHeight = maskRect.height;
+  const aspect = startWidth / startHeight;
 
-      selectMask(selectedMask); // update resizer position
+  function onMove(ev){
+    const dx = ev.clientX - startX;
+    const dy = ev.clientY - startY;
+
+    let newWidth = startWidth;
+    let newHeight = startHeight;
+    // compute based on handle, preserve aspect ratio
+    if(handleClass === 'mr'){
+      newWidth = startWidth + dx;
+      newHeight = newWidth / aspect;
+    } else if(handleClass === 'ml'){
+      newWidth = startWidth - dx;
+      newHeight = newWidth / aspect;
+    } else if(handleClass === 'bm'){
+      newHeight = startHeight + dy;
+      newWidth = newHeight * aspect;
+    } else if(handleClass === 'tm'){
+      newHeight = startHeight - dy;
+      newWidth = newHeight * aspect;
+    } else if(handleClass === 'br'){
+      newWidth = startWidth + dx;
+      newHeight = newWidth / aspect;
+    } else if(handleClass === 'bl'){
+      newWidth = startWidth - dx;
+      newHeight = newWidth / aspect;
+    } else if(handleClass === 'tr'){
+      newWidth = startWidth + dx;
+      newHeight = newWidth / aspect;
+    } else if(handleClass === 'tl'){
+      newWidth = startWidth - dx;
+      newHeight = newWidth / aspect;
     }
 
-    function onMouseUp() {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+    // enforce min
+    newWidth = Math.max(20, newWidth);
+    newHeight = Math.max(20, newHeight);
+
+    // compute new base left/top if left/top handles were used
+    let newBaseLeft = baseLeft;
+    let newBaseTop = baseTop;
+    if(['tl','ml','bl'].includes(handleClass)) {
+      newBaseLeft = baseLeft + (startWidth - newWidth);
+    }
+    if(['tl','tm','tr'].includes(handleClass)) {
+      newBaseTop = baseTop + (startHeight - newHeight);
     }
 
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  });
-});
+    // apply
+    selectedMask.style.width = newWidth + 'px';
+    selectedMask.style.height = newHeight + 'px';
+    selectedMask.style.left = newBaseLeft + 'px';
+    selectedMask.style.top = newBaseTop + 'px';
 
-// Panel reset
+    // update resizer overlay
+    updateResizerFor(selectedMask);
+  }
+
+  function onUp(){
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+/* ---------- Keep resizer in sync on window resize/scroll ---------- */
+window.addEventListener('resize', ()=>{ if(selectedMask) updateResizerFor(selectedMask); });
+window.addEventListener('scroll', ()=>{ if(selectedMask) updateResizerFor(selectedMask); }, true);
+
+/* ---------- Panel reset ---------- */
 panelReset.addEventListener('click', ()=>{
   document.querySelectorAll('.mask-layer').forEach(m=>m.remove());
-  resizerBox.style.display = "none";
+  hideResizer();
 });
 </script>
 </body>
