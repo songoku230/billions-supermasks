@@ -20,6 +20,7 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
+      overflow: hidden;
     }
     .container {
       text-align: center;
@@ -107,6 +108,42 @@
     .made-by a:hover {
       text-decoration: underline;
     }
+
+    /* Right Panel Styles */
+    #right-panel {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 225px;
+      height: 400px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 10px;
+      display: none;
+      z-index: 20;
+      overflow-y: auto;
+    }
+    #close-panel {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    #mask-list img {
+      width: 80px;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 8px;
+    }
+    #mask-list img:hover {
+      border-color: var(--blue);
+    }
   </style>
 </head>
 <body>
@@ -137,6 +174,14 @@
     </div>
   </div>
 
+  <!-- Right Panel -->
+  <div id="right-panel">
+    <button id="close-panel">✕</button>
+    <h3>Choose a Mask</h3>
+    <div id="mask-list"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/dist/interact.min.js"></script>
   <script>
     const fileInput = document.getElementById('fileInput');
     const preview = document.getElementById('preview');
@@ -146,14 +191,15 @@
     const btnMask = document.getElementById('btnMask');
     const btnDownload = document.getElementById('btnDownload');
     const btnReset = document.getElementById('btnReset');
+    const rightPanel = document.getElementById('right-panel');
+    const closePanel = document.getElementById('close-panel');
+    const maskList = document.getElementById('mask-list');
 
     btnUpload.addEventListener('click', () => fileInput.click());
-
     fileInput.addEventListener('change', e => {
       const file = e.target.files[0];
       if(file) loadImage(file);
     });
-
     frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
     frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
     frame.addEventListener('drop', e => {
@@ -170,7 +216,6 @@
       preview.src = url;
       preview.style.display = 'block';
       placeholder.style.display = 'none';
-
       const img = new Image();
       img.src = url;
       img.onload = () => {
@@ -183,7 +228,15 @@
       };
     }
 
-    btnMask.addEventListener('click', () => { if(preview.src) preview.classList.toggle('masked'); });
+    btnMask.addEventListener('click', () => {
+      if(!preview.src) return;
+      rightPanel.style.display = 'block';
+    });
+
+    closePanel.addEventListener('click', () => {
+      rightPanel.style.display = 'none';
+    });
+
     btnDownload.addEventListener('click', () => {
       if(!preview.src) return;
       const link = document.createElement('a');
@@ -191,6 +244,7 @@
       link.download = 'supermask.png';
       link.click();
     });
+
     btnReset.addEventListener('click', () => {
       preview.removeAttribute('src');
       preview.style.display = 'none';
@@ -199,93 +253,62 @@
       fileInput.value = '';
       frame.style.width = 'min(460px, 92vw)';
       frame.style.height = 'auto';
+      // remove any masks
+      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
+
+    // Example masks
+    const masks = [
+      '/assets/masks/mask1.png',
+      '/assets/masks/mask2.png',
+      '/assets/masks/mask3.png'
+    ];
+
+    masks.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.addEventListener('click', () => addMask(src));
+      maskList.appendChild(img);
+    });
+
+    function addMask(src) {
+      const mask = document.createElement('img');
+      mask.src = src;
+      mask.classList.add('mask-layer');
+      mask.style.position = 'absolute';
+      mask.style.top = '20px';
+      mask.style.left = '20px';
+      mask.style.width = '100px';
+      mask.style.height = 'auto';
+      mask.style.zIndex = '5';
+      frame.appendChild(mask);
+
+      interact(mask)
+        .draggable({
+          modifiers: [interact.modifiers.restrictRect({ restriction: frame })],
+          listeners: { move: dragMoveListener }
+        })
+        .resizable({
+          edges: { left:true, right:true, top:true, bottom:true },
+          listeners: { move: resizeMoveListener },
+          modifiers: [interact.modifiers.restrictEdges({ outer: frame })]
+        });
+    }
+
+    function dragMoveListener(event) {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
+
+    function resizeMoveListener(event) {
+      const target = event.target;
+      target.style.width = event.rect.width + 'px';
+      target.style.height = event.rect.height + 'px';
+    }
   </script>
 </body>
 </html>
-
-<!-- Add this inside the <body>, after the .container div -->
-
-<!-- Right Side Panel -->
-<div id="right-panel">
-  <button id="close-panel">✕</button>
-  <h3>Choose a Mask</h3>
-  <div id="mask-list"></div>
-</div>
-
-<style>
-  /* Right Panel Styles */
-  #right-panel {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    width: 225px;       /* 9:16 width for Instagram Reels ratio */
-    height: 400px;      /* adjust to keep 9:16 ratio */
-    background: rgba(255, 255, 255, 0.8); /* transparent white */
-    border-radius: 16px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    padding: 10px;
-    display: none;       /* hidden by default */
-    z-index: 20;
-    overflow-y: auto;
-  }
-
-  /* Close button */
-  #close-panel {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-
-  /* Mask thumbnails */
-  #mask-list img {
-    width: 80px;
-    margin: 5px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 8px;
-  }
-  #mask-list img:hover {
-    border-color: var(--blue);
-  }
-</style>
-
-<script>
-  const rightPanel = document.getElementById('right-panel');
-  const closePanel = document.getElementById('close-panel');
-
-  // Open panel when Supermasks button is clicked
-  btnMask.addEventListener('click', () => {
-    if (!preview.src) return; // only if an image is loaded
-    rightPanel.style.display = 'block';
-  });
-
-  // Close panel when X is clicked
-  closePanel.addEventListener('click', () => {
-    rightPanel.style.display = 'none';
-  });
-
-  // Example mask list
-  const masks = [
-    '/assets/masks/mask1.png',
-    '/assets/masks/mask2.png',
-    '/assets/masks/mask3.png'
-  ];
-
-  const maskList = document.getElementById('mask-list');
-
-  masks.forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.addEventListener('click', () => {
-      // TODO: Add mask on top of preview here
-      console.log('Mask selected:', src);
-    });
-    maskList.appendChild(img);
-  });
-</script>
