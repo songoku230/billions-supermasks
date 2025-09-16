@@ -1,35 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Billions Supermasks</title>
-  <!-- Google Fonts -->
+
+  <!-- Font used in your design -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root{
+      --pink:#ff9edb;
+      --green:#a4f7c6;
+      --frame-radius:20px;
+      --frame-border:6px;
+      --container-width:720px;
+    }
+
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;}
+    /* exact 50/50 split background */
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      background: linear-gradient(90deg,var(--pink) 50%, var(--green) 50%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .container{
+      width: min(var(--container-width), 94%);
+      text-align:center;
+      padding:28px;
+      box-sizing:border-box;
+    }
+
+    h1{margin:0 0 18px 0; line-height:1;}
+    .title-top{display:block; font-weight:300; font-size:28px; color:#111;}
+    .title-main{display:block; font-weight:700; font-size:46px; color:#111; letter-spacing:0.6px;}
+
+    /* frame: thin clear glass-like border with centered image */
+    .frame{
+      width: min(520px, 86vw);
+      aspect-ratio: 1 / 1;
+      margin:18px auto;
+      border-radius: var(--frame-radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
+      /* subtle translucent inner fill so image sits clearly */
+      background: rgba(255,255,255,0.85);
+      border: var(--frame-border) solid rgba(255,255,255,0.6);
+    }
+
+    /* hide any alt text before an image is loaded */
+    #preview{ 
+      max-width:100%;
+      max-height:100%;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      object-position:center;
+      display:block;
+      visibility:hidden; /* will be set visible when src loads */
+    }
+
+    /* optional placeholder (no text) — a faint dashed outline if no image */
+    .frame .placeholder{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      color:rgba(0,0,0,0.12);
+      font-weight:500;
+      font-size:14px;
+      letter-spacing:0.6px;
+      border-radius:inherit;
+      border:2px dashed rgba(0,0,0,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02));
+    }
+
+    .buttons{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      -webkit-appearance:none;
+      appearance:none;
+      border:0;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .upload{ background: rgba(0,0,0,0.06); }
+    .supermasks{ background: rgba(0,0,0,0.08); }
+    .download{ background:#111;color:#fff; margin-top:12px; padding:10px 20px; }
+
+    /* Supermask visual toggle */
+    #preview.masked{
+      /* example effect: slightly posterized / high-contrast look */
+      filter: contrast(1.12) saturate(1.15) brightness(0.98);
+      transform: scale(1.01);
+      transition: filter .18s ease, transform .18s ease;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .title-main{font-size:36px;}
+      .frame{aspect-ratio: 4 / 5;}
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>
-      <span class="title-top">Billions</span><br>
+      <span class="title-top">Billions</span>
       <span class="title-main">Supermasks</span>
     </h1>
 
-    <div class="frame">
-      <img id="preview" alt="Preview" />
+    <div class="frame" id="frame">
+      <!-- placeholder visible only when no image is loaded. No text that shows as broken-image alt. -->
+      <div class="placeholder" id="placeholder"></div>
+      <img id="preview" alt="">
     </div>
 
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
-      <button class="upload" onclick="document.getElementById('fileInput').click()">Upload image</button>
-      <button class="supermasks" onclick="applyMask()">Supermasks</button>
+      <button class="upload" id="btnUpload">Upload image</button>
+      <button class="supermasks" id="btnMask">Supermasks</button>
     </div>
 
-    <button class="download" onclick="downloadImage()">Download</button>
+    <button class="download" id="btnDownload">Download</button>
   </div>
 
-  <!-- JS -->
-  <script src="script.js"></script>
-</body>
-</html>
+  <script>
+    // elements
+    const fileInput = document.getElementById('fileInput');
+    const btnUpload = document.getElementById('btnUpload');
+    const btnMask = document.getElementById('btnMask');
+    const btnDownload = document.getElementById('btnDownload');
+    const preview = document.getElementById('preview');
+    const placeholder = document.getElementById('placeholder');
+
+    // open file dialog
+    btnUpload.addEventListener('click', () => fileInput.click());
+
+    // load preview safely and hide placeholder until image ready
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      // ensure image file
+      if (!file.type.startsWith('image/')) return;
+      const url = URL.createObjectURL(file);
+
+      // hide previous
+      preview.style.visibility = 'hidden';
+      preview.classList.remove('masked');
+
+      // set onload to show image only when ready
+      preview.onload = () => {
+        URL.revokeObjectURL(url);
+        preview.style.visibility = 'visible';
+        placeholder.style.display = 'none';
+      };
+
+      preview.onerror = () => {
+        // fallback: hide image and show placeholder
+        preview.removeAttribute('src');
+        preview.style.visibility = 'hidden';
+        placeholder.style.display = 'flex';
+      };
+
+      // set src last
+      preview.src = url;
+      // ensure placeholder visible until onload fires
+      placeholder.style.display = 'flex';
+    });
+
+    // toggle simple supermask effect
+    btnMask.addEventListener('click', () => {
+      if (!preview.src) return;
+      preview.classList.toggle('masked');
+    });
+
+    // download current image as PNG (preserve original resolution)
+    btnDownload.addEventListener('click', async () => {
+      if (!preview.src || preview.style.visibility !== 'visible') return alert('No image to download.');
+      // ensure natural sizes available
+      if (!preview.naturalWidth || !preview.n
