@@ -5,121 +5,124 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Billions Supermasks</title>
 
-  <!-- Font used in your design -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --pink:#ff9edb;
-      --green:#a4f7c6;
-      --frame-radius:20px;
-      --frame-border:6px;
-      --container-width:720px;
+    :root {
+      --pink: #ffb6e6;
+      --green: #b4f5d1;
+      --dark: #222;
+      --radius: 16px;
     }
 
-    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;}
-    /* exact 50/50 split background */
-    body{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      background: linear-gradient(90deg,var(--pink) 50%, var(--green) 50%);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, var(--pink) 50%, var(--green) 50%);
+      color: var(--dark);
     }
 
-    .container{
-      width: min(var(--container-width), 94%);
-      text-align:center;
-      padding:28px;
-      box-sizing:border-box;
+    .container {
+      text-align: center;
+      max-width: 720px;
+      width: 94%;
+      padding: 20px;
     }
 
-    h1{margin:0 0 18px 0; line-height:1;}
-    .title-top{display:block; font-weight:300; font-size:28px; color:#111;}
-    .title-main{display:block; font-weight:700; font-size:46px; color:#111; letter-spacing:0.6px;}
-
-    /* frame: thin clear glass-like border with centered image */
-    .frame{
-      width: min(520px, 86vw);
-      aspect-ratio: 1 / 1;
-      margin:18px auto;
-      border-radius: var(--frame-radius);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-      position:relative;
-      /* subtle translucent inner fill so image sits clearly */
-      background: rgba(255,255,255,0.85);
-      border: var(--frame-border) solid rgba(255,255,255,0.6);
+    h1 {
+      margin: 0 0 16px;
+      line-height: 1.2;
     }
 
-    /* hide any alt text before an image is loaded */
-    #preview{ 
-      max-width:100%;
-      max-height:100%;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      object-position:center;
-      display:block;
-      visibility:hidden; /* will be set visible when src loads */
+    .title-top {
+      display: block;
+      font-weight: 400;
+      font-size: 1.4rem;
     }
 
-    /* optional placeholder (no text) — a faint dashed outline if no image */
-    .frame .placeholder{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:none;
-      color:rgba(0,0,0,0.12);
-      font-weight:500;
-      font-size:14px;
-      letter-spacing:0.6px;
-      border-radius:inherit;
-      border:2px dashed rgba(0,0,0,0.06);
-      background:linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02));
+    .title-main {
+      display: block;
+      font-weight: 700;
+      font-size: 2.6rem;
     }
 
-    .buttons{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      margin-top:16px;
-      flex-wrap:wrap;
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
 
-    button{
-      -webkit-appearance:none;
-      appearance:none;
-      border:0;
-      padding:10px 16px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:600;
-      font-size:14px;
+    button {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .upload{ background: rgba(0,0,0,0.06); }
-    .supermasks{ background: rgba(0,0,0,0.08); }
-    .download{ background:#111;color:#fff; margin-top:12px; padding:10px 20px; }
-
-    /* Supermask visual toggle */
-    #preview.masked{
-      /* example effect: slightly posterized / high-contrast look */
-      filter: contrast(1.12) saturate(1.15) brightness(0.98);
-      transform: scale(1.01);
-      transition: filter .18s ease, transform .18s ease;
+    .upload {
+      background: var(--pink);
+    }
+    .supermasks {
+      background: var(--green);
+    }
+    .download {
+      background: var(--dark);
+      color: #fff;
     }
 
-    /* small responsive tweaks */
-    @media (max-width:520px){
-      .title-main{font-size:36px;}
-      .frame{aspect-ratio: 4 / 5;}
+    button:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .frame {
+      width: min(460px, 92vw);
+      aspect-ratio: 1/1;
+      margin: 0 auto 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      position: relative;
+      transition: border 0.2s ease, background 0.2s ease;
+    }
+
+    .frame.dragover {
+      border: 3px dashed var(--dark);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    #preview {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      border: 2px dashed rgba(0, 0, 0, 0.1);
+      border-radius: var(--radius);
+    }
+
+    /* Mask effect */
+    #preview.masked {
+      filter: contrast(1.1) saturate(1.15);
     }
   </style>
 </head>
@@ -130,73 +133,80 @@
       <span class="title-main">Supermasks</span>
     </h1>
 
+    <!-- Buttons now ABOVE the frame -->
+    <div class="buttons">
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <button class="upload" id="btnUpload">Upload</button>
+      <button class="supermasks" id="btnMask">Supermasks</button>
+      <button class="download" id="btnDownload">Download</button>
+    </div>
+
+    <!-- Frame with drag and drop -->
     <div class="frame" id="frame">
-      <!-- placeholder visible only when no image is loaded. No text that shows as broken-image alt. -->
       <div class="placeholder" id="placeholder"></div>
       <img id="preview" alt="">
     </div>
-
-    <div class="buttons">
-      <input type="file" id="fileInput" accept="image/*" hidden>
-      <button class="upload" id="btnUpload">Upload image</button>
-      <button class="supermasks" id="btnMask">Supermasks</button>
-    </div>
-
-    <button class="download" id="btnDownload">Download</button>
   </div>
 
   <script>
-    // elements
     const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const placeholder = document.getElementById('placeholder');
+    const frame = document.getElementById('frame');
     const btnUpload = document.getElementById('btnUpload');
     const btnMask = document.getElementById('btnMask');
     const btnDownload = document.getElementById('btnDownload');
-    const preview = document.getElementById('preview');
-    const placeholder = document.getElementById('placeholder');
 
-    // open file dialog
+    // upload via button
     btnUpload.addEventListener('click', () => fileInput.click());
 
-    // load preview safely and hide placeholder until image ready
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      // ensure image file
-      if (!file.type.startsWith('image/')) return;
+    // file input change
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) loadImage(file);
+    });
+
+    // drag-and-drop
+    frame.addEventListener('dragover', e => {
+      e.preventDefault();
+      frame.classList.add('dragover');
+    });
+    frame.addEventListener('dragleave', e => {
+      frame.classList.remove('dragover');
+    });
+    frame.addEventListener('drop', e => {
+      e.preventDefault();
+      frame.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        const file = e.dataTransfer.files[0];
+        if (file.type.startsWith('image/')) {
+          loadImage(file);
+        }
+      }
+    });
+
+    function loadImage(file) {
       const url = URL.createObjectURL(file);
-
-      // hide previous
-      preview.style.visibility = 'hidden';
-      preview.classList.remove('masked');
-
-      // set onload to show image only when ready
-      preview.onload = () => {
-        URL.revokeObjectURL(url);
-        preview.style.visibility = 'visible';
-        placeholder.style.display = 'none';
-      };
-
-      preview.onerror = () => {
-        // fallback: hide image and show placeholder
-        preview.removeAttribute('src');
-        preview.style.visibility = 'hidden';
-        placeholder.style.display = 'flex';
-      };
-
-      // set src last
       preview.src = url;
-      // ensure placeholder visible until onload fires
-      placeholder.style.display = 'flex';
-    });
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+    }
 
-    // toggle simple supermask effect
+    // mask toggle
     btnMask.addEventListener('click', () => {
-      if (!preview.src) return;
-      preview.classList.toggle('masked');
+      if (preview.style.display === 'block') {
+        preview.classList.toggle('masked');
+      }
     });
 
-    // download current image as PNG (preserve original resolution)
-    btnDownload.addEventListener('click', async () => {
-      if (!preview.src || preview.style.visibility !== 'visible') return alert('No image to download.');
-      // ensure natural sizes available
-      if (!preview.naturalWidth || !preview.n
+    // download
+    btnDownload.addEventListener('click', () => {
+      if (preview.style.display !== 'block') return;
+      const link = document.createElement('a');
+      link.href = preview.src;
+      link.download = 'supermask.png';
+      link.click();
+    });
+  </script>
+</body>
+</html>
