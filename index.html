@@ -76,6 +76,10 @@
       position: relative;
       transition: border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s;
     }
+    .frame.dragover {
+      border: 3px dashed var(--dark);
+      background: rgba(255, 255, 255, 0.8);
+    }
     #preview {
       max-width: 100%;
       max-height: 100%;
@@ -106,19 +110,19 @@
       text-decoration: underline;
     }
 
-    /* Right Panel */
+    /* Right Panel Styles */
     #right-panel {
       position: fixed;
       top: 50%;
       right: 50px;
       transform: translateY(-50%);
-      width: 300px;
-      height: 550px;
+      width: 300px;  /* wider panel for grid */
+      height: 550px; /* taller for scrolling many masks */
       background: rgba(255,255,255,0.9);
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
-      display: none;
+      display: none; /* hidden initially */
       z-index: 20;
       flex-direction: column;
     }
@@ -137,7 +141,7 @@
       cursor: pointer;
     }
     #mask-list {
-      flex: 1;
+      flex: 1; /* fill available vertical space */
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
@@ -168,44 +172,6 @@
     #panel-reset:hover {
       filter: brightness(1.1);
     }
-
-    /* Masks + transform box */
-    .mask-layer {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 100px;
-      height: auto;
-      cursor: move;
-    }
-    .transform-box {
-      position: absolute;
-      border: 1px dashed var(--blue);
-      pointer-events: none;
-    }
-    .handle {
-      width: 10px;
-      height: 10px;
-      background: #fff;
-      border: 2px solid var(--blue);
-      border-radius: 50%;
-      position: absolute;
-      pointer-events: all;
-    }
-    .handle.rotate {
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      cursor: grab;
-    }
-    .handle.nw { top: -5px; left: -5px; cursor: nwse-resize; }
-    .handle.ne { top: -5px; right: -5px; cursor: nesw-resize; }
-    .handle.sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
-    .handle.se { bottom: -5px; right: -5px; cursor: nwse-resize; }
-    .handle.n { top: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
-    .handle.s { bottom: -5px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
-    .handle.e { top: 50%; right: -5px; transform: translateY(-50%); cursor: ew-resize; }
-    .handle.w { top: 50%; left: -5px; transform: translateY(-50%); cursor: ew-resize; }
   </style>
 </head>
 <body>
@@ -243,6 +209,7 @@
     <button id="panel-reset">Reset Panel</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/dist/interact.min.js"></script>
   <script>
     const fileInput = document.getElementById('fileInput');
     const preview = document.getElementById('preview');
@@ -262,16 +229,41 @@
       const file = e.target.files[0];
       if(file) loadImage(file);
     });
+    frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
+    frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
+    frame.addEventListener('drop', e => {
+      e.preventDefault();
+      frame.classList.remove('dragover');
+      if(e.dataTransfer.files.length) {
+        const file = e.dataTransfer.files[0];
+        if(file.type.startsWith('image/')) loadImage(file);
+      }
+    });
+
     function loadImage(file) {
       const url = URL.createObjectURL(file);
       preview.src = url;
       preview.style.display = 'block';
       placeholder.style.display = 'none';
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        const aspectRatio = img.width / img.height;
+        const maxWidth = Math.min(460, window.innerWidth * 0.92);
+        const width = maxWidth;
+        const height = width / aspectRatio;
+        frame.style.width = width + 'px';
+        frame.style.height = height + 'px';
+      };
     }
 
-    // Open/close panel (untouched)
-    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
-    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
+    // Open/close panel (do not change)
+    btnMask.addEventListener('click', () => {
+      rightPanel.style.display = 'flex';
+    });
+    closePanel.addEventListener('click', () => {
+      rightPanel.style.display = 'none';
+    });
 
     btnDownload.addEventListener('click', () => {
       if(!preview.src) return;
@@ -284,17 +276,25 @@
     btnReset.addEventListener('click', () => {
       preview.removeAttribute('src');
       preview.style.display = 'none';
+      preview.classList.remove('masked');
       placeholder.style.display = 'block';
       fileInput.value = '';
-      document.querySelectorAll('.mask-layer,.transform-box').forEach(m => m.remove());
+      frame.style.width = 'min(460px, 92vw)';
+      frame.style.height = 'auto';
+      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
     const masks = [
       '/assets/masks/mask1.png',
       '/assets/masks/mask2.png',
       '/assets/masks/mask3.png',
-      '/assets/masks/mask4.png'
+      '/assets/masks/mask4.png',
+      '/assets/masks/mask5.png',
+      '/assets/masks/mask6.png',
+      '/assets/masks/mask7.png',
+      '/assets/masks/mask8.png'
     ];
+
     masks.forEach(src => {
       const img = document.createElement('img');
       img.src = src;
@@ -302,57 +302,50 @@
       maskList.appendChild(img);
     });
 
-    let activeMask = null;
-    let transformBox = null;
-
     function addMask(src) {
       const mask = document.createElement('img');
       mask.src = src;
       mask.classList.add('mask-layer');
+      mask.style.position = 'absolute';
+      mask.style.top = '20px';
+      mask.style.left = '20px';
+      mask.style.width = '100px';
+      mask.style.height = 'auto';
+      mask.style.zIndex = '5';
       frame.appendChild(mask);
-      mask.addEventListener('click', e => {
-        e.stopPropagation();
-        selectMask(mask);
-      });
-      selectMask(mask);
+
+      interact(mask)
+        .draggable({
+          modifiers: [interact.modifiers.restrictRect({ restriction: frame })],
+          listeners: { move: dragMoveListener }
+        })
+        .resizable({
+          edges: { left:true, right:true, top:true, bottom:true },
+          listeners: { move: resizeMoveListener },
+          modifiers: [interact.modifiers.restrictEdges({ outer: frame })]
+        });
     }
 
-    function selectMask(mask) {
-      if (transformBox) transformBox.remove();
-      activeMask = mask;
-
-      const box = document.createElement('div');
-      box.classList.add('transform-box');
-      frame.appendChild(box);
-      transformBox = box;
-
-      positionBox();
-
-      const handles = ['nw','n','ne','w','e','sw','s','se','rotate'];
-      handles.forEach(cls=>{
-        const h = document.createElement('div');
-        h.classList.add('handle',cls);
-        box.appendChild(h);
-      });
+    function dragMoveListener(event) {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
     }
 
-    function positionBox() {
-      if (!activeMask || !transformBox) return;
-      const rect = activeMask.getBoundingClientRect();
-      const frameRect = frame.getBoundingClientRect();
-      transformBox.style.left = (rect.left - frameRect.left) + "px";
-      transformBox.style.top = (rect.top - frameRect.top) + "px";
-      transformBox.style.width = rect.width + "px";
-      transformBox.style.height = rect.height + "px";
+    function resizeMoveListener(event) {
+      const target = event.target;
+      target.style.width = event.rect.width + 'px';
+      target.style.height = event.rect.height + 'px';
     }
 
-    frame.addEventListener('click', ()=> {
-      if(transformBox){ transformBox.remove(); transformBox=null; activeMask=null;}
-    });
-    window.addEventListener('resize', positionBox);
+    // Panel reset button
     panelReset.addEventListener('click', () => {
-      document.querySelectorAll('.mask-layer,.transform-box').forEach(m => m.remove());
+      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
+
   </script>
 </body>
 </html>
