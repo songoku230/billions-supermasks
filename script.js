@@ -80,7 +80,7 @@ btnReset.addEventListener('click', () => {
   frame.style.height = 'auto';
 });
 
-// Toggle Right Panel
+ // Toggle Right Panel
 document.getElementById('btn-right').onclick = () => {
   document.getElementById('right-panel').classList.toggle('open');
 };
@@ -112,7 +112,7 @@ function addMaskToCanvas(src) {
   mask.style.left = '50px';
   canvas.appendChild(mask);
 
-  // Make mask draggable & resizable using Interact.js
+  // Make mask draggable using Interact.js (resize/rotate optional later)
   interact(mask).draggable({
     modifiers: [interact.modifiers.restrictRect({ restriction: canvas })],
     listeners: { move: dragMoveListener }
@@ -139,4 +139,3 @@ function resizeMoveListener(event) {
   target.style.width = event.rect.width + 'px';
   target.style.height = event.rect.height + 'px';
 }
-
