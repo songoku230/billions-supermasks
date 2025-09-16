@@ -114,9 +114,14 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
       margin-top: 40px;
-      overflow-y: auto;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: #1e90ff rgba(0,0,0,0.1);
       padding-bottom: 10px;
     }
+    #mask-list::-webkit-scrollbar { width: 8px; }
+    #mask-list::-webkit-scrollbar-thumb { background-color: #1e90ff; border-radius: 4px; }
+    #mask-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
     #mask-list img {
       width: 100%;
       cursor: pointer;
@@ -185,10 +190,7 @@ const panelReset = document.getElementById('panel-reset');
 
 // Upload user image
 btnUpload.addEventListener('click', ()=>fileInput.click());
-fileInput.addEventListener('change', e => {
-  if(e.target.files[0]) loadImage(e.target.files[0]);
-});
-
+fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
 function loadImage(file){
   const url = URL.createObjectURL(file);
   preview.src = url;
@@ -214,17 +216,16 @@ btnReset.addEventListener('click', ()=>{
 // Download
 btnDownload.addEventListener('click', ()=>{
   html2canvas(frame).then(canvas=>{
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = 'supermask.png';
+    const link=document.createElement('a');
+    link.href=canvas.toDataURL('image/png');
+    link.download='supermask.png';
     link.click();
   });
 });
 
 // Masks
-const masks = [];
+const masks=[];
 for(let i=1;i<=36;i++) masks.push(`masks/mask${i}.png`);
-
 masks.forEach(src=>{
   const img=document.createElement('img');
   img.src=src;
@@ -250,9 +251,7 @@ function addMask(src){
       listeners:{move:resizeMoveListener},
       preserveAspectRatio:true
     })
-    .gesturable({
-      listeners:{move:gestureMoveListener}
-    });
+    .gesturable({listeners:{move:gestureMoveListener}});
 }
 
 // InteractJS listeners
@@ -263,13 +262,11 @@ function dragMoveListener(event){
   target.style.transform=`translate(${x}px,${y}px) rotate(${target.getAttribute('data-rotate')||0}deg)`;
   target.setAttribute('data-x',x); target.setAttribute('data-y',y);
 }
-
 function resizeMoveListener(event){
   const target=event.target;
   target.style.width=event.rect.width+'px';
   target.style.height=event.rect.height+'px';
 }
-
 function gestureMoveListener(event){
   const target=event.target;
   const current=parseFloat(target.getAttribute('data-rotate')||0);
