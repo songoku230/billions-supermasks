@@ -151,19 +151,46 @@ button:hover:not(:disabled) {
 
 /* Canvas Container */
 #canvas-container {
-  position: relative;
   width: 300px;
   height: 300px;
-  margin: 50px auto;
+  margin: 50px auto; /* keeps it centered */
+  position: relative;
+  z-index: 1; /* ensure panel overlays later if needed */
 }
-#canvas-container img {
-  position: absolute;
-  top: 0;
-  left: 0;
+
+/* Right Panel Styles */
+.side-panel {
+  position: fixed;
+  top: 50px; /* same as canvas top */
+  right: -260px; /* hidden initially */
+  width: 250px;
+  height: 300px; /* same as canvas height */
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 10; /* above canvas */
+  padding: 10px;
 }
+
+.side-panel.open {
+  right: 0; /* slides in from right */
+}
+
+/* Mask Thumbnails */
+#mask-list img {
+  width: 100px;
+  margin: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+#mask-list img:hover { border-color: #f00; }
+
+/* Mask Layer on Canvas */
 .mask-layer {
   position: absolute;
   top: 0;
   left: 0;
   cursor: move;
 }
+    
