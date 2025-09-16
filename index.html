@@ -1,269 +1,263 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
   <title>Billions Supermasks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --blue: #1e90ff;
-      --dark: #111;
-      --radius: 16px;
-    }
     body {
-      margin: 0;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
-      color: var(--dark);
-      overflow-y: auto;
+      margin: 0;
+      padding: 0;
     }
-    .container {
-      text-align: center;
-      max-width: 720px;
-      width: 94%;
-      padding: 20px;
+
+    .top-bar {
+      margin: 10px;
     }
-    h1 {
-      margin: 0 0 16px;
-      line-height: 1.2;
-    }
-    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
-    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    button {
-      padding: 8px 14px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: linear-gradient(180deg, #1e90ff, #4682b4);
-      color: #fff;
-    }
-    button:hover {
-      box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
-      filter: brightness(1.08);
-    }
+
     .frame {
-      width: min(460px, 92vw);
-      aspect-ratio: 1/1;
-      margin: 0 auto 20px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(10px);
-      border: 3px solid rgba(255, 255, 255, 0.6);
       position: relative;
+      width: 400px;
+      height: 400px;
+      border: 2px dashed #aaa;
+      background: #f9f9f9;
+      overflow: hidden;
     }
-    #preview {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: none;
-    }
-    .placeholder {
+
+    .frame img.uploaded {
       width: 100%;
       height: 100%;
-      border: 2px dashed rgba(0,0,0,0.1);
-      border-radius: var(--radius);
-    }
-    .made-by {
-      margin-top: 10px;
-      font-size: 0.9rem;
-    }
-    .made-by a {
-      color: #1e90ff;
-      text-decoration: none;
-      margin: 0 6px;
-    }
-    .made-by a:hover { text-decoration: underline; }
-    #right-panel {
-      position: fixed;
-      top: 50%;
-      right: 50px;
-      transform: translateY(-50%);
-      width: 300px;
-      height: 550px;
-      background: rgba(255,255,255,0.9);
-      border-radius: 16px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      padding: 10px;
-      display: none;
-      z-index: 20;
-      flex-direction: column;
-    }
-    #mask-list {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 40px;
-      overflow-y: auto;
-      padding-bottom: 10px;
-    }
-    #mask-list img {
-      width: 100%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      border-radius: 8px;
       object-fit: contain;
     }
-    #mask-list img:hover { border-color: var(--blue); }
+
+    .mask-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .mask {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      transform: translate(-50%, -50%);
+      cursor: move;
+      pointer-events: auto;
+    }
+
+    .mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Resizer handles */
+    .resizer {
+      width: 10px;
+      height: 10px;
+      background: #000;
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      cursor: se-resize;
+    }
+
+    .rotator {
+      width: 10px;
+      height: 10px;
+      background: red;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: grab;
+    }
+
+    /* Mask panel */
+    .panel {
+      position: fixed;
+      top: 0;
+      right: -220px;
+      width: 200px;
+      height: 100%;
+      background: #f1f1f1;
+      border-left: 2px solid #ccc;
+      overflow-y: auto;
+      transition: right 0.3s ease;
+      padding: 10px;
+    }
+
+    .panel.open {
+      right: 0;
+    }
+
+    .panel img {
+      width: 80px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    button {
+      margin: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>
-      <span class="title-top">Billions</span>
-      <span class="title-main">Supermasks</span>
-    </h1>
-
-    <div class="buttons">
-      <input type="file" id="fileInput" accept="image/*" hidden>
-      <button id="btnUpload">Upload</button>
-      <button id="btnMask">Supermasks</button>
-      <button id="btnDownload">Download</button>
-      <button id="btnReset">Reset</button>
-    </div>
-
-    <div class="frame" id="frame">
-      <div class="placeholder" id="placeholder"></div>
-      <img id="preview" alt="">
-    </div>
-
-    <div class="made-by">
-      Made by:
-      <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
-      <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
-    </div>
+  <div class="top-bar">
+    <input type="file" id="upload" accept="image/*">
+    <button id="togglePanel">Supermasks</button>
+    <button id="resetAll">Reset All</button>
   </div>
 
-  <!-- Right Panel -->
-  <div id="right-panel">
-    <button id="close-panel">✕</button>
-    <h3>Choose a Mask</h3>
-    <div id="mask-list"></div>
-    <button id="panel-reset">Reset Panel</button>
+  <div class="frame">
+    <img id="uploadedImage" class="uploaded" src="" alt="">
+    <div class="mask-layer" id="maskLayer"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/dist/interact.min.js"></script>
+  <div class="panel" id="maskPanel">
+    <button id="resetMasks">Reset Masks</button>
+    <div id="maskList"></div>
+  </div>
+
   <script>
-    const fileInput = document.getElementById('fileInput');
-    const preview = document.getElementById('preview');
-    const placeholder = document.getElementById('placeholder');
-    const frame = document.getElementById('frame');
-    const btnUpload = document.getElementById('btnUpload');
-    const btnMask = document.getElementById('btnMask');
-    const btnDownload = document.getElementById('btnDownload');
-    const btnReset = document.getElementById('btnReset');
-    const rightPanel = document.getElementById('right-panel');
-    const closePanel = document.getElementById('close-panel');
-    const maskList = document.getElementById('mask-list');
-    const panelReset = document.getElementById('panel-reset');
+    const upload = document.getElementById('upload');
+    const uploadedImage = document.getElementById('uploadedImage');
+    const maskLayer = document.getElementById('maskLayer');
+    const maskPanel = document.getElementById('maskPanel');
+    const togglePanel = document.getElementById('togglePanel');
+    const resetAll = document.getElementById('resetAll');
+    const resetMasks = document.getElementById('resetMasks');
+    const maskList = document.getElementById('maskList');
 
-    btnUpload.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', e => {
+    // Generate mask thumbnails (1–36)
+    for (let i = 1; i <= 36; i++) {
+      const img = document.createElement('img');
+      img.src = `masks/${i}.png`;
+      img.dataset.mask = `masks/${i}.png`;
+      img.onclick = () => addMask(img.dataset.mask);
+      maskList.appendChild(img);
+    }
+
+    // Upload image
+    upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
-      if(file) {
-        const url = URL.createObjectURL(file);
-        preview.src = url;
-        preview.style.display = 'block';
-        placeholder.style.display = 'none';
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          uploadedImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
       }
     });
 
-    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
-    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
-
-    btnDownload.addEventListener('click', () => {
-      if(!preview.src) return;
-      const link = document.createElement('a');
-      link.href = preview.src;
-      link.download = 'supermask.png';
-      link.click();
+    // Toggle panel
+    togglePanel.addEventListener('click', () => {
+      maskPanel.classList.toggle('open');
     });
 
-    btnReset.addEventListener('click', () => {
-      preview.removeAttribute('src');
-      preview.style.display = 'none';
-      placeholder.style.display = 'block';
-      fileInput.value = '';
-      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
+    // Reset everything
+    resetAll.addEventListener('click', () => {
+      uploadedImage.src = '';
+      maskLayer.innerHTML = '';
     });
 
-    const masks = Array.from({length:36}, (_,i) => `masks/mask${i+1}.png`);
-
-    masks.forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.addEventListener('click', () => addMask(src));
-      maskList.appendChild(img);
+    // Reset only masks
+    resetMasks.addEventListener('click', () => {
+      maskLayer.innerHTML = '';
     });
 
+    // Add mask
     function addMask(src) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('mask');
+      wrapper.style.top = "50%";
+      wrapper.style.left = "50%";
+      wrapper.style.transform = "translate(-50%, -50%)";
+
       const mask = document.createElement('img');
       mask.src = src;
-      mask.classList.add('mask-layer');
-      mask.style.position = 'absolute';
-      mask.style.top = '50%';
-      mask.style.left = '50%';
-      mask.style.width = '120px';
-      mask.style.transform = 'translate(-50%, -50%)';
-      mask.style.zIndex = '10';
-      frame.appendChild(mask);
 
-      interact(mask)
-        .draggable({ listeners: { move: dragMoveListener } })
-        .resizable({
-          edges: { left:true, right:true, top:true, bottom:true },
-          listeners: { move: resizeMoveListener }
-        })
-        .gesturable({
-          listeners: {
-            move (event) {
-              const current = parseFloat(mask.getAttribute('data-rotation')) || 0;
-              const newAngle = current + event.da;
-              mask.style.transform += ` rotate(${event.da}deg)`;
-              mask.setAttribute('data-rotation', newAngle);
-            }
-          }
-        });
+      // Resizer
+      const resizer = document.createElement('div');
+      resizer.classList.add('resizer');
+
+      // Rotator
+      const rotator = document.createElement('div');
+      rotator.classList.add('rotator');
+
+      wrapper.appendChild(mask);
+      wrapper.appendChild(resizer);
+      wrapper.appendChild(rotator);
+      maskLayer.appendChild(wrapper);
+
+      makeInteractive(wrapper, resizer, rotator);
     }
 
-    function dragMoveListener (event) {
-      const target = event.target;
-      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-      target.style.transform = `translate(${x}px, ${y}px) rotate(${target.getAttribute('data-rotation') || 0}deg)`;
-      target.setAttribute('data-x', x);
-      target.setAttribute('data-y', y);
-    }
+    function makeInteractive(element, resizer, rotator) {
+      let isDragging = false, isResizing = false, isRotating = false;
+      let startX, startY, startWidth, startHeight, startAngle = 0, rotation = 0;
 
-    function resizeMoveListener (event) {
-      const target = event.target;
-      target.style.width = event.rect.width + 'px';
-      target.style.height = event.rect.height + 'px';
-    }
+      // Move
+      element.addEventListener('mousedown', (e) => {
+        if (e.target === resizer || e.target === rotator) return;
+        isDragging = true;
+        startX = e.clientX - element.offsetLeft;
+        startY = e.clientY - element.offsetTop;
+      });
 
-    panelReset.addEventListener('click', () => {
-      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
-    });
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          element.style.left = e.clientX - startX + "px";
+          element.style.top = e.clientY - startY + "px";
+        }
+        if (isResizing) {
+          element.style.width = startWidth + (e.clientX - startX) + "px";
+          element.style.height = startHeight + (e.clientY - startY) + "px";
+        }
+        if (isRotating) {
+          const rect = element.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          rotation = Math.atan2(dy, dx) * (180 / Math.PI);
+          element.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        isResizing = false;
+        isRotating = false;
+      });
+
+      // Resize
+      resizer.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isResizing = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10);
+      });
+
+      // Rotate
+      rotator.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isRotating = true;
+      });
+    }
   </script>
 </body>
 </html>
