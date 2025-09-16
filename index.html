@@ -6,37 +6,177 @@
   <title>Billions Supermasks</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --blue: #1e90ff; --dark: #111; --radius: 16px; }
-    body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; font-family:'Poppins',sans-serif; background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%); color:var(--dark); overflow-y:auto; }
-    .container { text-align:center; max-width:720px; width:94%; padding:20px; }
-    h1 { margin:0 0 16px; line-height:1.2; }
-    .title-top { display:block; font-weight:400; font-size:1.4rem; }
-    .title-main { display:block; font-weight:700; font-size:2.6rem; }
-    .buttons { display:flex; justify-content:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-    button, .upload, .supermasks, .download, .reset { padding:8px 14px; font-size:0.9rem; font-weight:600; border:none; border-radius:var(--radius); cursor:pointer; transition:all 0.2s ease; background:linear-gradient(180deg,#1e90ff,#4682b4)!important; color:#fff!important; }
-    button:hover { box-shadow:0 0 8px rgba(30,144,255,0.5); filter:brightness(1.08); }
-    .frame { width:min(460px,92vw); aspect-ratio:1/1; margin:0 auto 20px; border-radius:var(--radius); overflow:hidden; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.65); backdrop-filter:blur(10px); border:3px solid rgba(255,255,255,0.6); position:relative; transition:border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s; }
-    .frame.dragover { border:3px dashed var(--dark); background:rgba(255,255,255,0.8); }
-    #preview { max-width:100%; max-height:100%; object-fit:contain; display:none; }
-    .placeholder { width:100%; height:100%; border:2px dashed rgba(0,0,0,0.1); border-radius:var(--radius); }
-    .made-by { margin-top:10px; font-size:0.9rem; }
-    .made-by a { color:#1e90ff; text-decoration:none; margin-left:6px; margin-right:6px; }
-    .made-by a:hover { text-decoration:underline; }
-
-    /* Right Panel */
-    #right-panel { position:fixed; top:50%; right:50px; transform:translateY(-50%); width:300px; height:550px; background:rgba(255,255,255,0.9); border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2); padding:10px; display:none; z-index:20; flex-direction:column; }
-    #right-panel h3 { margin:0; text-align:center; font-weight:600; }
-    #close-panel { position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
-    #mask-list { flex:1; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:40px; overflow-y:auto; padding-bottom:10px; }
-    #mask-list img { width:100%; cursor:pointer; border:2px solid transparent; border-radius:8px; object-fit:contain; }
-    #mask-list img:hover { border-color:var(--blue); }
-    #panel-reset { margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
-    #panel-reset:hover { filter:brightness(1.1); }
+    :root {
+      --blue: #1e90ff;
+      --dark: #111;
+      --radius: 16px;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
+      color: var(--dark);
+      overflow-y: auto;
+    }
+    .container {
+      text-align: center;
+      max-width: 720px;
+      width: 94%;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0 0 16px;
+      line-height: 1.2;
+    }
+    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
+    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    button,
+    .upload,
+    .supermasks,
+    .download,
+    .reset {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: linear-gradient(180deg, #1e90ff, #4682b4) !important;
+      color: #fff !important;
+    }
+    button:hover {
+      box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
+      filter: brightness(1.08);
+    }
+    .frame {
+      width: min(460px, 92vw);
+      aspect-ratio: 1/1;
+      margin: 0 auto 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      position: relative;
+      transition: border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s;
+    }
+    .frame.dragover {
+      border: 3px dashed var(--dark);
+      background: rgba(255, 255, 255, 0.8);
+    }
+    #preview {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      border: 2px dashed rgba(0,0,0,0.1);
+      border-radius: var(--radius);
+    }
+    #preview.masked {
+      filter: contrast(1.1) saturate(1.15);
+    }
+    .made-by {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .made-by a {
+      color: #1e90ff;
+      text-decoration: none;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+    .made-by a:hover {
+      text-decoration: underline;
+    }
+    #right-panel {
+      position: fixed;
+      top: 50%;
+      right: 50px;
+      transform: translateY(-50%);
+      width: 300px;
+      height: 550px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 10px;
+      display: none;
+      z-index: 20;
+      flex-direction: column;
+    }
+    #right-panel h3 {
+      margin: 0;
+      text-align: center;
+      font-weight: 600;
+    }
+    #close-panel {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    #mask-list {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 40px;
+      overflow-y: auto;
+      padding-bottom: 10px;
+    }
+    #mask-list img {
+      width: 100%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    #mask-list img:hover {
+      border-color: var(--blue);
+    }
+    #panel-reset {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(180deg, #ff6347, #ff4500);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #panel-reset:hover {
+      filter: brightness(1.1);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1><span class="title-top">Billions</span><span class="title-main">Supermasks</span></h1>
+    <h1>
+      <span class="title-top">Billions</span>
+      <span class="title-main">Supermasks</span>
+    </h1>
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
       <button class="upload" id="btnUpload">Upload</button>
@@ -48,13 +188,13 @@
       <div class="placeholder" id="placeholder"></div>
       <img id="preview" alt="">
     </div>
-    <div class="made-by">Made by:
+    <div class="made-by">
+      Made by:
       <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
       <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
     </div>
   </div>
 
-  <!-- Right Panel -->
   <div id="right-panel">
     <button id="close-panel">✕</button>
     <h3>Choose a Mask</h3>
@@ -78,62 +218,109 @@
     const panelReset = document.getElementById('panel-reset');
 
     btnUpload.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', e => { const file=e.target.files[0]; if(file) loadImage(file); });
+    fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
     frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
-    frame.addEventListener('dragleave', ()=> frame.classList.remove('dragover'));
+    frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
     frame.addEventListener('drop', e => {
-      e.preventDefault(); frame.classList.remove('dragover');
-      if(e.dataTransfer.files.length){ const file=e.dataTransfer.files[0]; if(file.type.startsWith('image/')) loadImage(file); }
+      e.preventDefault();
+      frame.classList.remove('dragover');
+      if(e.dataTransfer.files.length) {
+        const file = e.dataTransfer.files[0];
+        if(file.type.startsWith('image/')) loadImage(file);
+      }
     });
 
-    function loadImage(file){
-      const url=URL.createObjectURL(file);
-      preview.src=url; preview.style.display='block'; placeholder.style.display='none';
-      const img=new Image(); img.src=url; img.onload=()=>{ const aspectRatio=img.width/img.height; const maxWidth=Math.min(460,window.innerWidth*0.92); frame.style.width=maxWidth+'px'; frame.style.height=(maxWidth/aspectRatio)+'px'; };
+    function loadImage(file) {
+      const url = URL.createObjectURL(file);
+      preview.src = url;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        const aspectRatio = img.width / img.height;
+        const maxWidth = Math.min(460, window.innerWidth * 0.92);
+        frame.style.width = maxWidth + 'px';
+        frame.style.height = maxWidth / aspectRatio + 'px';
+      };
     }
 
-    btnMask.addEventListener('click', ()=> rightPanel.style.display='flex');
-    closePanel.addEventListener('click', ()=> rightPanel.style.display='none');
+    btnMask.addEventListener('click', () => { rightPanel.style.display = 'flex'; });
+    closePanel.addEventListener('click', () => { rightPanel.style.display = 'none'; });
 
-    btnDownload.addEventListener('click', ()=>{
+    btnDownload.addEventListener('click', () => {
       if(!preview.src) return;
-      const link=document.createElement('a'); link.href=preview.src; link.download='supermask.png'; link.click();
+      const link = document.createElement('a');
+      link.href = preview.src;
+      link.download = 'supermask.png';
+      link.click();
     });
 
-    btnReset.addEventListener('click', ()=>{
-      preview.removeAttribute('src'); preview.style.display='none'; preview.classList.remove('masked'); placeholder.style.display='block';
-      fileInput.value=''; frame.style.width='min(460px,92vw)'; frame.style.height='auto';
-      document.querySelectorAll('.mask-layer').forEach(m=>m.remove());
+    btnReset.addEventListener('click', () => {
+      preview.removeAttribute('src');
+      preview.style.display = 'none';
+      preview.classList.remove('masked');
+      placeholder.style.display = 'block';
+      fileInput.value = '';
+      frame.style.width = 'min(460px, 92vw)';
+      frame.style.height = 'auto';
+      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
-    // Load 37 masks automatically
-    const masks=[];
-    for(let i=1;i<=37;i++){ masks.push(`masks/mask${i}.png`); }
+    const masks = [];
+    for(let i=1; i<=36; i++){
+      masks.push(`masks/mask${i}.png`);
+    }
 
-    masks.forEach(src=>{
-      const img=document.createElement('img'); img.src=src; img.addEventListener('click',()=>addMask(src)); maskList.appendChild(img);
+    masks.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.addEventListener('click', () => addMask(src));
+      maskList.appendChild(img);
     });
 
-    function addMask(src){
-      const mask=document.createElement('img'); mask.src=src; mask.classList.add('mask-layer');
-      mask.style.position='absolute'; mask.style.top='20px'; mask.style.left='20px'; mask.style.width='100px'; mask.style.height='auto'; mask.style.zIndex='5';
+    function addMask(src) {
+      const mask = document.createElement('img');
+      mask.src = src;
+      mask.classList.add('mask-layer');
+      mask.style.position = 'absolute';
+      mask.style.top = '20px';
+      mask.style.left = '20px';
+      mask.style.width = '100px';
+      mask.style.height = 'auto';
+      mask.style.zIndex = '5';
       frame.appendChild(mask);
+
       interact(mask)
-        .draggable({ modifiers:[interact.modifiers.restrictRect({restriction:frame})], listeners:{move:dragMoveListener} })
-        .resizable({ edges:{left:true,right:true,top:true,bottom:true}, listeners:{move:resizeMoveListener}, modifiers:[interact.modifiers.restrictEdges({outer:frame})] });
+        .draggable({
+          modifiers: [interact.modifiers.restrictRect({ restriction: frame })],
+          listeners: { move: dragMoveListener }
+        })
+        .resizable({
+          edges: { left:true, right:true, top:true, bottom:true },
+          listeners: { move: resizeMoveListener },
+          modifiers: [interact.modifiers.restrictEdges({ outer: frame })]
+        });
     }
 
-    function dragMoveListener(event){
-      const target=event.target; const x=(parseFloat(target.getAttribute('data-x'))||0)+event.dx;
-      const y=(parseFloat(target.getAttribute('data-y'))||0)+event.dy;
-      target.style.transform=`translate(${x}px, ${y}px)`; target.setAttribute('data-x',x); target.setAttribute('data-y',y);
+    function dragMoveListener(event) {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      target.style.transform = `translate(${x}px, ${y}px)`;
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
     }
 
-    function resizeMoveListener(event){
-      const target=event.target; target.style.width=event.rect.width+'px'; target.style.height=event.rect.height+'px';
+    function resizeMoveListener(event) {
+      const target = event.target;
+      target.style.width = event.rect.width + 'px';
+      target.style.height = event.rect.height + 'px';
     }
 
-    panelReset.addEventListener('click', ()=>{ document.querySelectorAll('.mask-layer').forEach(m=>m.remove()); });
+    panelReset.addEventListener('click', () => {
+      document.querySelectorAll('.mask-layer').forEach(m => m.remove());
+    });
 
   </script>
 </body>
