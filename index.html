@@ -4,17 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Billions Supermasks</title>
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --blue: #1e90ff;   /* gradient base color */
+      --blue: #1e90ff;
       --dark: #111;
       --radius: 16px;
     }
-
     body {
       margin: 0;
       height: 100vh;
@@ -25,31 +21,18 @@
       background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
     }
-
     .container {
       text-align: center;
       max-width: 720px;
       width: 94%;
       padding: 20px;
     }
-
     h1 {
       margin: 0 0 16px;
       line-height: 1.2;
     }
-
-    .title-top {
-      display: block;
-      font-weight: 400;
-      font-size: 1.4rem;
-    }
-
-    .title-main {
-      display: block;
-      font-weight: 700;
-      font-size: 2.6rem;
-    }
-
+    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
+    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
     .buttons {
       display: flex;
       justify-content: center;
@@ -57,7 +40,6 @@
       margin-bottom: 14px;
       flex-wrap: wrap;
     }
-
     button,
     .upload,
     .supermasks,
@@ -73,18 +55,10 @@
       background: linear-gradient(180deg, #1e90ff, #4682b4) !important;
       color: #fff !important;
     }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-
-    button:hover:not(:disabled) {
+    button:hover {
       box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
       filter: brightness(1.08);
     }
-
     .frame {
       width: min(460px, 92vw);
       aspect-ratio: 1/1;
@@ -100,27 +74,22 @@
       position: relative;
       transition: border 0.2s ease, background 0.2s ease, width 0.3s, height 0.3s;
     }
-
     .frame.dragover {
       border: 3px dashed var(--dark);
       background: rgba(255, 255, 255, 0.8);
     }
-
     #preview {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
       display: none;
     }
-
     .placeholder {
       width: 100%;
       height: 100%;
-      border: 2px dashed rgba(0, 0, 0, 0.1);
+      border: 2px dashed rgba(0,0,0,0.1);
       border-radius: var(--radius);
     }
-
-    /* Mask effect */
     #preview.masked {
       filter: contrast(1.1) saturate(1.15);
     }
@@ -133,16 +102,14 @@
       <span class="title-main">Supermasks</span>
     </h1>
 
-    <!-- Buttons above frame -->
     <div class="buttons">
       <input type="file" id="fileInput" accept="image/*" hidden>
       <button class="upload" id="btnUpload">Upload</button>
-      <button class="supermasks" id="btnMask" disabled>Supermasks</button>
-      <button class="download" id="btnDownload" disabled>Download</button>
-      <button class="reset" id="btnReset" disabled>Reset</button>
+      <button class="supermasks" id="btnMask">Supermasks</button>
+      <button class="download" id="btnDownload">Download</button>
+      <button class="reset" id="btnReset">Reset</button>
     </div>
 
-    <!-- Frame with drag and drop -->
     <div class="frame" id="frame">
       <div class="placeholder" id="placeholder"></div>
       <img id="preview" alt="">
@@ -159,48 +126,30 @@
     const btnDownload = document.getElementById('btnDownload');
     const btnReset = document.getElementById('btnReset');
 
-    // enable/disable buttons
-    function toggleButtons(hasImage) {
-      btnMask.disabled = !hasImage;
-      btnDownload.disabled = !hasImage;
-      btnReset.disabled = !hasImage;
-    }
-
-    // upload via button
     btnUpload.addEventListener('click', () => fileInput.click());
 
-    // file input change
     fileInput.addEventListener('change', e => {
       const file = e.target.files[0];
-      if (file) loadImage(file);
+      if(file) loadImage(file);
     });
 
-    // drag-and-drop
-    frame.addEventListener('dragover', e => {
-      e.preventDefault();
-      frame.classList.add('dragover');
-    });
-    frame.addEventListener('dragleave', () => {
-      frame.classList.remove('dragover');
-    });
+    frame.addEventListener('dragover', e => { e.preventDefault(); frame.classList.add('dragover'); });
+    frame.addEventListener('dragleave', () => frame.classList.remove('dragover'));
     frame.addEventListener('drop', e => {
       e.preventDefault();
       frame.classList.remove('dragover');
-      if (e.dataTransfer.files.length) {
+      if(e.dataTransfer.files.length) {
         const file = e.dataTransfer.files[0];
-        if (file.type.startsWith('image/')) loadImage(file);
+        if(file.type.startsWith('image/')) loadImage(file);
       }
     });
 
-    // load image and resize frame
     function loadImage(file) {
       const url = URL.createObjectURL(file);
       preview.src = url;
       preview.style.display = 'block';
       placeholder.style.display = 'none';
-      toggleButtons(true);
 
-      // Adjust frame to image aspect ratio
       const img = new Image();
       img.src = url;
       img.onload = () => {
@@ -213,37 +162,23 @@
       };
     }
 
-    // mask toggle
-    btnMask.addEventListener('click', () => {
-      if (preview.style.display === 'block') {
-        preview.classList.toggle('masked');
-      }
-    });
-
-    // download
+    btnMask.addEventListener('click', () => { if(preview.src) preview.classList.toggle('masked'); });
     btnDownload.addEventListener('click', () => {
-      if (preview.style.display !== 'block') return;
+      if(!preview.src) return;
       const link = document.createElement('a');
       link.href = preview.src;
       link.download = 'supermask.png';
       link.click();
     });
-
-    // reset
     btnReset.addEventListener('click', () => {
       preview.removeAttribute('src');
       preview.style.display = 'none';
       preview.classList.remove('masked');
       placeholder.style.display = 'block';
       fileInput.value = '';
-      toggleButtons(false);
-      // reset frame to square default
       frame.style.width = 'min(460px, 92vw)';
       frame.style.height = 'auto';
     });
-
-    // initial state
-    toggleButtons(false);
   </script>
 </body>
 </html>
