@@ -123,28 +123,3 @@ button:hover:not(:disabled) {
 .made-by a:hover {
   text-decoration: underline;
 }
-
-/* Right Panel Styles */
-.side-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 250px;
-  height: 100vh;
-  background: #fff;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-  overflow-y: auto;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  z-index: 100;
-  padding: 10px;
-}
-.side-panel.open { transform: translateX(0); }
-
-#mask-list img {
-  width: 100px;
-  margin: 10px;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-#mask-list img:hover { border-color: #f00; }
