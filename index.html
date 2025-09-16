@@ -113,18 +113,18 @@
     #right-panel {
       position: fixed;
       top: 50%;
-      right: 20px;               /* slightly right */
+      right: 40px;               /* slightly right of center */
       transform: translateY(-50%);
       width: 160px;               /* narrow vertical panel */
-      height: 320px;              /* 9:18 ratio */
+      height: 355px;              /* 9:20 ratio */
       background: rgba(255,255,255,0.8);
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
       z-index: 20;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;     /* vertical list */
+      display: none;              /* hidden by default */
+      flex-direction: column;
       align-items: center;
     }
     #close-panel {
@@ -139,12 +139,13 @@
     #mask-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       width: 100%;
-      margin-top: 10px;
+      margin-top: 30px;
+      align-items: center;
     }
     #mask-list img {
-      width: 100%;
+      width: 80%;
       border: 2px solid transparent;
       border-radius: 8px;
       cursor: pointer;
@@ -245,9 +246,10 @@
       };
     }
 
+    // Show panel only when user clicks Supermasks
     btnMask.addEventListener('click', () => {
-      // Toggle panel visibility
-      rightPanel.style.display = rightPanel.style.display === 'none' ? 'flex' : 'flex';
+      if(!preview.src) return;
+      rightPanel.style.display = 'flex';
     });
 
     closePanel.addEventListener('click', () => {
@@ -273,7 +275,7 @@
       document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
-    // Example masks
+    // Masks array
     const masks = [
       '/assets/masks/mask1.png',
       '/assets/masks/mask2.png',
