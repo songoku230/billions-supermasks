@@ -113,3 +113,13 @@ button:hover:not(:disabled) {
 #preview.masked {
   filter: contrast(1.1) saturate(1.15);
 }
+
+.made-by a {
+  color: #111; /* dark black */
+  text-decoration: none;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.made-by a:hover {
+  text-decoration: underline;
+}
