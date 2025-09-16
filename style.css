@@ -1,3 +1,52 @@
+:root {
+  --blue: #1e90ff;   /* DodgerBlue */
+  --dark: #111;
+  --radius: 16px;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%); /* pink/green split stays */
+  color: var(--dark);
+}
+
+.container {
+  text-align: center;
+  max-width: 720px;
+  width: 94%;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.title-top {
+  display: block;
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+
+.title-main {
+  display: block;
+  font-weight: 700;
+  font-size: 2.6rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
 button,
 .upload,
 .supermasks,
@@ -10,7 +59,7 @@ button,
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
-  background: linear-gradient(180deg, #1e90ff, #4682b4) !important; /* gradient blue */
+  background: var(--blue) !important;
   color: #fff !important;
 }
 
@@ -22,5 +71,45 @@ button:disabled {
 
 button:hover:not(:disabled) {
   box-shadow: 0 0 8px rgba(30, 144, 255, 0.5);
-  filter: brightness(1.08);
+  filter: brightness(1.1);
+}
+
+.frame {
+  width: min(460px, 92vw);
+  aspect-ratio: 1/1;
+  margin: 0 auto 20px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.frame.dragover {
+  border: 3px dashed var(--dark);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+#preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+}
+
+/* Mask effect */
+#preview.masked {
+  filter: contrast(1.1) saturate(1.15);
 }
