@@ -17,7 +17,6 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
-      overflow-y: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -50,20 +49,21 @@
       color: #fff;
     }
     button:hover { filter: brightness(1.08); }
+
     .frame {
       width: min(460px, 92vw);
-      aspect-ratio: 1/1;
+      height: 460px;
       margin: 0 auto 20px;
       border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
       background: rgba(255,255,255,0.65);
       border: 3px solid rgba(255,255,255,0.6);
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: auto; /* 🔥 Scroll enable */
     }
     canvas {
+      display: block;
       border-radius: var(--radius);
     }
     .made-by {
@@ -92,11 +92,7 @@
       z-index: 20;
       flex-direction: column;
     }
-    #right-panel h3 {
-      margin: 0;
-      text-align: center;
-      font-weight: 600;
-    }
+    #right-panel h3 { margin: 0; text-align: center; font-weight: 600; }
     #close-panel {
       position: absolute;
       top: 8px;
@@ -150,7 +146,7 @@
       <button id="btnReset">Reset</button>
     </div>
     <div class="frame" id="frame">
-      <canvas id="editorCanvas" width="460" height="460"></canvas>
+      <canvas id="editorCanvas"></canvas>
     </div>
     <div class="made-by">
       Made by: 
@@ -166,7 +162,6 @@
     <button id="panel-reset">Reset Panel</button>
   </div>
 
-  <!-- Fabric.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <script>
     const canvas = new fabric.Canvas('editorCanvas', {
@@ -174,7 +169,7 @@
       selection: true
     });
 
-    // Small, clean resize handles
+    // 🔹 Resize handles setup
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = '#1e90ff';
     fabric.Object.prototype.cornerStyle = 'circle';
@@ -200,14 +195,17 @@
         reader.onload = function(f) {
           fabric.Image.fromURL(f.target.result, function(img) {
             if (userImage) canvas.remove(userImage);
-            img.scaleToWidth(canvas.width);
-            img.scaleToHeight(canvas.height);
+
+            // 🔥 Set canvas to image natural size
+            canvas.setWidth(img.width);
+            canvas.setHeight(img.height);
+
             img.set({ selectable: false });
             userImage = img;
             canvas.add(img);
             canvas.sendToBack(img);
             canvas.renderAll();
-          });
+          }, { crossOrigin: 'anonymous' });
         };
         reader.readAsDataURL(e.target.files[0]);
       }
@@ -235,7 +233,7 @@
 
     // Load masks
     const masks = [];
-    for (let i = 1; i <= 12; i++) { // sample 12 masks (change to 36 if needed)
+    for (let i = 1; i <= 12; i++) { // change to 36 if needed
       masks.push(`masks/mask${i}.png`);
     }
 
@@ -253,7 +251,7 @@
           canvas.add(mask);
           canvas.setActiveObject(mask);
           canvas.renderAll();
-        });
+        }, { crossOrigin: 'anonymous' });
       });
       maskList.appendChild(img);
     });
