@@ -21,7 +21,7 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
       color: var(--dark);
-      overflow-y: auto; /* allow scrolling */
+      overflow-y: auto;
     }
     .container {
       text-align: center;
@@ -122,9 +122,8 @@
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
-      display: none;
+      display: none; /* hidden initially */
       z-index: 20;
-      display: flex;
       flex-direction: column;
     }
     #right-panel h3 {
@@ -285,7 +284,6 @@
       document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
-    // Example masks
     const masks = [
       '/assets/masks/mask1.png',
       '/assets/masks/mask2.png',
