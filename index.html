@@ -95,7 +95,6 @@
     #preview.masked {
       filter: contrast(1.1) saturate(1.15);
     }
-    /* Made by line */
     .made-by {
       margin-top: 10px;
       font-size: 0.9rem;
@@ -109,20 +108,18 @@
     .made-by a:hover {
       text-decoration: underline;
     }
-
-    /* Right Panel Styles */
     #right-panel {
       position: fixed;
       top: 50%;
       right: 50px;
       transform: translateY(-50%);
-      width: 300px;  /* wider panel for grid */
-      height: 550px; /* taller for scrolling many masks */
+      width: 300px;
+      height: 550px;
       background: rgba(255,255,255,0.9);
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
-      display: none; /* hidden initially */
+      display: none;
       z-index: 20;
       flex-direction: column;
     }
@@ -141,7 +138,7 @@
       cursor: pointer;
     }
     #mask-list {
-      flex: 1; /* fill available vertical space */
+      flex: 1;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
@@ -201,7 +198,6 @@
     </div>
   </div>
 
-  <!-- Right Panel -->
   <div id="right-panel">
     <button id="close-panel">✕</button>
     <h3>Choose a Mask</h3>
@@ -257,13 +253,8 @@
       };
     }
 
-    // Open/close panel (do not change)
-    btnMask.addEventListener('click', () => {
-      rightPanel.style.display = 'flex';
-    });
-    closePanel.addEventListener('click', () => {
-      rightPanel.style.display = 'none';
-    });
+    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
+    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
 
     btnDownload.addEventListener('click', () => {
       if(!preview.src) return;
@@ -272,7 +263,6 @@
       link.download = 'supermask.png';
       link.click();
     });
-
     btnReset.addEventListener('click', () => {
       preview.removeAttribute('src');
       preview.style.display = 'none';
@@ -284,16 +274,8 @@
       document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
 
-    const masks = [
-      '/assets/masks/mask1.png',
-      '/assets/masks/mask2.png',
-      '/assets/masks/mask3.png',
-      '/assets/masks/mask4.png',
-      '/assets/masks/mask5.png',
-      '/assets/masks/mask6.png',
-      '/assets/masks/mask7.png',
-      '/assets/masks/mask8.png'
-    ];
+    const masks = [];
+    for(let i=1; i<=37; i++) masks.push(`/masks/mask${i}.png`);
 
     masks.forEach(src => {
       const img = document.createElement('img');
@@ -341,11 +323,9 @@
       target.style.height = event.rect.height + 'px';
     }
 
-    // Panel reset button
     panelReset.addEventListener('click', () => {
       document.querySelectorAll('.mask-layer').forEach(m => m.remove());
     });
-
   </script>
 </body>
 </html>
