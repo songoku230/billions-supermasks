@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Billions Supermasks</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -63,66 +63,20 @@
       align-items: center;
       justify-content: center;
     }
-    #preview {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .mask-wrapper {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: 100px;
-      user-select: none;
-    }
-    .mask-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      pointer-events: none;
-    }
-    .resizer {
-      position: absolute;
-      border: 2px dashed var(--blue);
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: none;
-    }
-    .mask-wrapper.active .resizer { display: block; }
-    .handle {
-      width: 10px;
-      height: 10px;
-      background: var(--blue);
-      border-radius: 50%;
-      position: absolute;
-      cursor: pointer;
-    }
-    .handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
-    .handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
-    .handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
-    .handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
-    .rotate {
-      width: 14px;
-      height: 14px;
-      background: orange;
-      border-radius: 50%;
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      cursor: grab;
-    }
-    .placeholder {
-      width: 100%;
-      height: 100%;
-      border: 2px dashed rgba(0,0,0,0.1);
+    canvas {
       border-radius: var(--radius);
     }
-    .made-by { margin-top: 10px; font-size: 0.9rem; }
-    .made-by a { color: #1e90ff; text-decoration: none; margin: 0 6px; }
+    .made-by {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .made-by a {
+      color: #1e90ff;
+      text-decoration: none;
+      margin: 0 6px;
+    }
     .made-by a:hover { text-decoration: underline; }
+
     #right-panel {
       position: fixed;
       top: 50%;
@@ -138,6 +92,20 @@
       z-index: 20;
       flex-direction: column;
     }
+    #right-panel h3 {
+      margin: 0;
+      text-align: center;
+      font-weight: 600;
+    }
+    #close-panel {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
     #mask-list {
       flex: 1;
       display: grid;
@@ -145,190 +113,157 @@
       gap: 10px;
       margin-top: 40px;
       overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: #1e90ff rgba(0,0,0,0.1);
+      padding-bottom: 10px;
     }
     #mask-list img {
       width: 100%;
       cursor: pointer;
       border-radius: 8px;
+      object-fit: contain;
+    }
+    #mask-list img:hover { border: 2px solid var(--blue); }
+    #panel-reset {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(180deg, #ff6347, #ff4500);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>
-    <span class="title-top">Billions</span>
-    <span class="title-main">Supermasks</span>
-  </h1>
-  <div class="buttons">
-    <input type="file" id="fileInput" accept="image/*" hidden>
-    <button id="btnUpload">Upload</button>
-    <button id="btnMask">Supermasks</button>
-    <button id="btnDownload">Download</button>
-    <button id="btnReset">Reset</button>
+  <div class="container">
+    <h1>
+      <span class="title-top">Billions</span>
+      <span class="title-main">Supermasks</span>
+    </h1>
+    <div class="buttons">
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <button id="btnUpload">Upload</button>
+      <button id="btnMask">Supermasks</button>
+      <button id="btnDownload">Download</button>
+      <button id="btnReset">Reset</button>
+    </div>
+    <div class="frame" id="frame">
+      <canvas id="editorCanvas" width="460" height="460"></canvas>
+    </div>
+    <div class="made-by">
+      Made by: 
+      <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
+      <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
+    </div>
   </div>
-  <div class="frame" id="frame">
-    <div class="placeholder" id="placeholder"></div>
-    <img id="preview" alt="">
+
+  <div id="right-panel">
+    <button id="close-panel">✕</button>
+    <h3>Choose a Mask</h3>
+    <div id="mask-list"></div>
+    <button id="panel-reset">Reset Panel</button>
   </div>
-</div>
 
-<div id="right-panel">
-  <button id="close-panel">✕</button>
-  <h3>Choose a Mask</h3>
-  <div id="mask-list"></div>
-  <button id="panel-reset">Reset Panel</button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script>
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
-const placeholder = document.getElementById('placeholder');
-const frame = document.getElementById('frame');
-const btnUpload = document.getElementById('btnUpload');
-const btnMask = document.getElementById('btnMask');
-const btnDownload = document.getElementById('btnDownload');
-const btnReset = document.getElementById('btnReset');
-const rightPanel = document.getElementById('right-panel');
-const closePanel = document.getElementById('close-panel');
-const maskList = document.getElementById('mask-list');
-const panelReset = document.getElementById('panel-reset');
-
-btnUpload.addEventListener('click', ()=>fileInput.click());
-fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
-function loadImage(file){
-  const url = URL.createObjectURL(file);
-  preview.src = url;
-  preview.style.display = 'block';
-  placeholder.style.display = 'none';
-}
-
-btnMask.addEventListener('click', ()=>rightPanel.style.display='flex');
-closePanel.addEventListener('click', ()=>rightPanel.style.display='none');
-
-btnReset.addEventListener('click', ()=>{
-  preview.removeAttribute('src'); preview.style.display='none';
-  placeholder.style.display='block'; fileInput.value='';
-  document.querySelectorAll('.mask-wrapper').forEach(m=>m.remove());
-});
-
-btnDownload.addEventListener('click', ()=>{
-  html2canvas(frame).then(canvas=>{
-    const link=document.createElement('a');
-    link.href=canvas.toDataURL('image/png');
-    link.download='supermask.png';
-    link.click();
-  });
-});
-
-const masks=[];
-for(let i=1;i<=36;i++) masks.push(`./masks/mask${i}.png`);
-masks.forEach(src=>{
-  const img=document.createElement('img');
-  img.src=src;
-  img.addEventListener('click',()=>addMask(src));
-  maskList.appendChild(img);
-});
-
-let activeMask=null;
-
-function addMask(src){
-  const wrapper=document.createElement('div');
-  wrapper.classList.add('mask-wrapper');
-  wrapper.style.top="20px"; wrapper.style.left="20px";
-  wrapper.style.width="120px"; wrapper.style.transform="rotate(0deg)";
-  wrapper.innerHTML=`
-    <img src="${src}">
-    <div class="resizer">
-      <div class="handle nw"></div>
-      <div class="handle ne"></div>
-      <div class="handle sw"></div>
-      <div class="handle se"></div>
-      <div class="rotate"></div>
-    </div>`;
-  frame.appendChild(wrapper);
-
-  wrapper.addEventListener('mousedown', ()=>setActive(wrapper));
-  setActive(wrapper);
-
-  makeDraggable(wrapper);
-  makeResizable(wrapper);
-  makeRotatable(wrapper);
-}
-
-function setActive(wrapper){
-  document.querySelectorAll('.mask-wrapper').forEach(m=>m.classList.remove('active'));
-  wrapper.classList.add('active');
-  activeMask=wrapper;
-}
-
-function makeDraggable(el){
-  let isDown=false, startX, startY, rect;
-  el.addEventListener('mousedown',e=>{
-    if(e.target.classList.contains('handle')||e.target.classList.contains('rotate')) return;
-    isDown=true; rect=el.getBoundingClientRect();
-    startX=e.clientX-rect.left; startY=e.clientY-rect.top;
-    document.addEventListener('mousemove',move);
-    document.addEventListener('mouseup',up);
-  });
-  function move(e){
-    if(!isDown) return;
-    el.style.left=(e.clientX-startX-frame.getBoundingClientRect().left)+'px';
-    el.style.top=(e.clientY-startY-frame.getBoundingClientRect().top)+'px';
-  }
-  function up(){isDown=false;document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);}
-}
-
-function makeResizable(el){
-  el.querySelectorAll('.handle').forEach(handle=>{
-    handle.addEventListener('mousedown',e=>{
-      e.stopPropagation();
-      const rect=el.getBoundingClientRect();
-      const startX=e.clientX; const startY=e.clientY;
-      const startW=rect.width; const startH=rect.height;
-      const startL=parseFloat(el.style.left); const startT=parseFloat(el.style.top);
-      function move(ev){
-        let dx=ev.clientX-startX, dy=ev.clientY-startY;
-        if(handle.classList.contains('se')){el.style.width=(startW+dx)+'px'; el.style.height=(startH+dy)+'px';}
-        if(handle.classList.contains('sw')){el.style.width=(startW-dx)+'px'; el.style.left=(startL+dx)+'px'; el.style.height=(startH+dy)+'px';}
-        if(handle.classList.contains('ne')){el.style.width=(startW+dx)+'px'; el.style.height=(startH-dy)+'px'; el.style.top=(startT+dy)+'px';}
-        if(handle.classList.contains('nw')){el.style.width=(startW-dx)+'px'; el.style.left=(startL+dx)+'px'; el.style.height=(startH-dy)+'px'; el.style.top=(startT+dy)+'px';}
-      }
-      function up(){document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);}
-      document.addEventListener('mousemove',move);
-      document.addEventListener('mouseup',up);
+  <!-- Fabric.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <script>
+    const canvas = new fabric.Canvas('editorCanvas', {
+      preserveObjectStacking: true,
+      selection: true
     });
-  });
-}
 
-function makeRotatable(el){
-  const rotateHandle=el.querySelector('.rotate');
-  let startX, startY, startAngle;
-  rotateHandle.addEventListener('mousedown',e=>{
-    e.stopPropagation();
-    const rect=el.getBoundingClientRect();
-    const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
-    startX=e.clientX; startY=e.clientY;
-    startAngle=getRotation(el);
-    function move(ev){
-      const dx=ev.clientX-cx, dy=ev.clientY-cy;
-      const angle=Math.atan2(dy,dx)*180/Math.PI;
-      el.style.transform=`rotate(${angle}deg)`;
+    // Small, clean resize handles
+    fabric.Object.prototype.transparentCorners = false;
+    fabric.Object.prototype.cornerColor = '#1e90ff';
+    fabric.Object.prototype.cornerStyle = 'circle';
+    fabric.Object.prototype.cornerSize = 8;
+
+    const fileInput = document.getElementById('fileInput');
+    const btnUpload = document.getElementById('btnUpload');
+    const btnMask = document.getElementById('btnMask');
+    const btnDownload = document.getElementById('btnDownload');
+    const btnReset = document.getElementById('btnReset');
+    const rightPanel = document.getElementById('right-panel');
+    const closePanel = document.getElementById('close-panel');
+    const maskList = document.getElementById('mask-list');
+    const panelReset = document.getElementById('panel-reset');
+
+    let userImage = null;
+
+    // Upload image
+    btnUpload.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+      if (e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(f) {
+          fabric.Image.fromURL(f.target.result, function(img) {
+            if (userImage) canvas.remove(userImage);
+            img.scaleToWidth(canvas.width);
+            img.scaleToHeight(canvas.height);
+            img.set({ selectable: false });
+            userImage = img;
+            canvas.add(img);
+            canvas.sendToBack(img);
+            canvas.renderAll();
+          });
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+
+    // Panel
+    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
+    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
+
+    // Reset
+    btnReset.addEventListener('click', () => {
+      canvas.clear();
+      userImage = null;
+      fileInput.value = '';
+    });
+
+    // Download
+    btnDownload.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'supermask.png';
+      link.click();
+    });
+
+    // Load masks
+    const masks = [];
+    for (let i = 1; i <= 12; i++) { // sample 12 masks (change to 36 if needed)
+      masks.push(`masks/mask${i}.png`);
     }
-    function up(){document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);}
-    document.addEventListener('mousemove',move);
-    document.addEventListener('mouseup',up);
-  });
-}
-function getRotation(el){
-  const st=window.getComputedStyle(el,null).getPropertyValue("transform");
-  if(st==="none") return 0;
-  const values=st.split('(')[1].split(')')[0].split(',');
-  const a=values[0], b=values[1];
-  return Math.round(Math.atan2(b,a)*(180/Math.PI));
-}
 
-panelReset.addEventListener('click', ()=>document.querySelectorAll('.mask-wrapper').forEach(m=>m.remove()));
-</script>
+    masks.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.addEventListener('click', () => {
+        fabric.Image.fromURL(src, function(mask) {
+          mask.set({
+            left: 50,
+            top: 50,
+            scaleX: 0.3,
+            scaleY: 0.3
+          });
+          canvas.add(mask);
+          canvas.setActiveObject(mask);
+          canvas.renderAll();
+        });
+      });
+      maskList.appendChild(img);
+    });
+
+    // Panel reset (remove all masks)
+    panelReset.addEventListener('click', () => {
+      canvas.getObjects().forEach(obj => {
+        if (obj !== userImage) canvas.remove(obj);
+      });
+    });
+  </script>
 </body>
 </html>
