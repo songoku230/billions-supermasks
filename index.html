@@ -1,247 +1,241 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Billions Supermasks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --blue:#1e90ff; --dark:#111; --radius:16px; }
-    body{ margin:0; min-height:100vh; font-family:'Poppins',sans-serif; background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%); color:var(--dark); display:flex; flex-direction:column; align-items:center; padding:20px 0; }
-    .container{ text-align:center; max-width:720px; width:94%; padding:0 10px; }
-    h1{ margin:0 0 16px; line-height:1.2; }
-    .title-top{ display:block; font-weight:400; font-size:1.4rem; }
-    .title-main{ display:block; font-weight:700; font-size:2.6rem; }
-    .buttons{ display:flex; justify-content:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-    button{ padding:8px 14px; font-size:.9rem; font-weight:600; border:none; border-radius:var(--radius); cursor:pointer; transition:all .2s ease; background:linear-gradient(180deg,#1e90ff,#4682b4); color:#fff; }
-    button:hover{ filter:brightness(1.08); }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Billions Supermasks</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --blue:#1e90ff; --dark:#111; --radius:16px; }
+body{ margin:0; min-height:100vh; font-family:'Poppins',sans-serif; background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%); color:var(--dark); display:flex; flex-direction:column; align-items:center; padding:20px 0; }
+.container{ text-align:center; max-width:720px; width:94%; padding:0 10px; }
+h1{ margin:0 0 16px; line-height:1.2; }
+.title-top{ display:block; font-weight:400; font-size:1.4rem; }
+.title-main{ display:block; font-weight:700; font-size:2.6rem; }
+.buttons{ display:flex; justify-content:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+button{ padding:8px 14px; font-size:.9rem; font-weight:600; border:none; border-radius:var(--radius); cursor:pointer; transition:all .2s ease; background:linear-gradient(180deg,#1e90ff,#4682b4); color:#fff; }
+button:hover{ filter:brightness(1.08); }
 
-    .frame{ margin:0 auto 20px; border-radius:var(--radius); overflow:hidden; position:relative; background:rgba(255,255,255,0.65); border:3px solid rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:80vh; }
-    canvas{ border-radius:var(--radius); display:block; }
+.frame{ margin:0 auto 20px; border-radius:var(--radius); overflow:hidden; position:relative; background:rgba(255,255,255,0.65); border:3px solid rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:80vh; }
+canvas{ border-radius:var(--radius); display:block; }
 
-    .made-by{ margin-top:10px; font-size:.9rem; }
-    .made-by a{ color:var(--blue); text-decoration:none; margin:0 6px; }
-    .made-by a:hover{ text-decoration:underline; }
+.made-by{ margin-top:10px; font-size:.9rem; }
+.made-by a{ color:var(--blue); text-decoration:none; margin:0 6px; }
+.made-by a:hover{ text-decoration:underline; }
 
-    #right-panel{ position:fixed; top:50%; right:50px; transform:translateY(-50%); width:300px; height:550px; background:rgba(255,255,255,0.95); border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2); padding:10px; display:none; z-index:20; flex-direction:column; }
-    #right-panel h3{ margin:0; text-align:center; font-weight:600; }
-    #close-panel{ position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
-    #mask-list{ flex:1; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:40px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#1e90ff rgba(0,0,0,0.1); padding-bottom:10px; padding-right:6px; }
-    #mask-list img{ width:100%; cursor:pointer; border-radius:8px; object-fit:contain; background:#fff; padding:8px; box-sizing:border-box; }
-    #mask-list img:hover{ border:2px solid var(--blue); }
-    #panel-reset{ margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
+#right-panel{ position:fixed; top:50%; right:50px; transform:translateY(-50%); width:300px; height:550px; background:rgba(255,255,255,0.95); border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2); padding:10px; display:none; z-index:20; flex-direction:column; }
+#right-panel h3{ margin:0; text-align:center; font-weight:600; }
+#close-panel{ position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
+#mask-list{ flex:1; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:40px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#1e90ff rgba(0,0,0,0.1); padding-bottom:10px; padding-right:6px; }
+#mask-list img{ width:100%; cursor:pointer; border-radius:8px; object-fit:contain; background:#fff; padding:8px; box-sizing:border-box; }
+#mask-list img:hover{ border:2px solid var(--blue); }
+#panel-reset{ margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
 
-    @media (max-width:800px){ #right-panel{ right:12px; top:auto; bottom:12px; transform:none; width:86vw; height:38vh; display:none; } }
-  </style>
+/* Mobile responsive */
+@media (max-width:600px){
+  #right-panel{
+    top:auto;
+    bottom:10px;
+    right:50%;
+    transform:translateX(50%);
+    width:95%;
+    height:150px;
+    flex-direction:column;
+    padding:6px;
+  }
+  #mask-list{
+    display:flex;
+    flex-direction:row;
+    gap:8px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    margin-top:8px;
+    padding:0 6px;
+  }
+  #mask-list img{ flex:0 0 auto; width:80px; height:80px; }
+  .buttons{ flex-direction:column; gap:8px; }
+  button{ width:100%; font-size:1rem; padding:10px; }
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1><span class="title-top">Billions</span><span class="title-main">Supermasks</span></h1>
+<div class="container">
+<h1><span class="title-top">Billions</span><span class="title-main">Supermasks</span></h1>
 
-    <div class="buttons">
-      <input type="file" id="fileInput" accept="image/*" hidden>
-      <button id="btnUpload">Upload</button>
-      <button id="btnMask">Supermasks</button>
-      <button id="btnDownload">Download</button>
-      <button id="btnReset">Reset</button>
-    </div>
+<div class="buttons">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<button id="btnUpload">Upload</button>
+<button id="btnMask">Supermasks</button>
+<button id="btnDownload">Download</button>
+<button id="btnReset">Reset</button>
+</div>
 
-    <div class="frame" id="frame" aria-label="editor frame">
-      <canvas id="editorCanvas"></canvas>
-    </div>
+<div class="frame" id="frame" aria-label="editor frame">
+<canvas id="editorCanvas"></canvas>
+</div>
 
-    <div class="made-by">
-      Made by:
-      <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
-      <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
-    </div>
-  </div>
+<div class="made-by">
+Made by:
+<a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
+<a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
+</div>
+</div>
 
-  <div id="right-panel">
-    <button id="close-panel">✕</button>
-    <h3>Choose a Mask</h3>
-    <div id="mask-list"></div>
-    <button id="panel-reset">Reset Panel</button>
-  </div>
+<div id="right-panel">
+<button id="close-panel">✕</button>
+<h3>Choose a Mask</h3>
+<div id="mask-list"></div>
+<button id="panel-reset">Reset Panel</button>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-  <script>
-    const canvas = new fabric.Canvas('editorCanvas', { preserveObjectStacking:true, selection:true });
-    const editorCanvas = document.getElementById('editorCanvas');
-    const frame = document.getElementById('frame');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+<script>
+const canvas = new fabric.Canvas('editorCanvas',{ preserveObjectStacking:true, selection:true });
+const editorCanvas=document.getElementById('editorCanvas');
+const frame=document.getElementById('frame');
 
-    fabric.Object.prototype.transparentCorners = false;
-    fabric.Object.prototype.cornerColor = '#1e90ff';
-    fabric.Object.prototype.cornerStyle = 'circle';
-    fabric.Object.prototype.cornerSize = 8;
+fabric.Object.prototype.transparentCorners=false;
+fabric.Object.prototype.cornerColor='#1e90ff';
+fabric.Object.prototype.cornerStyle='circle';
+fabric.Object.prototype.cornerSize=8;
 
-    const fileInput = document.getElementById('fileInput');
-    const btnUpload = document.getElementById('btnUpload');
-    const btnMask = document.getElementById('btnMask');
-    const btnDownload = document.getElementById('btnDownload');
-    const btnReset = document.getElementById('btnReset');
-    const rightPanel = document.getElementById('right-panel');
-    const closePanel = document.getElementById('close-panel');
-    const maskList = document.getElementById('mask-list');
-    const panelReset = document.getElementById('panel-reset');
+const fileInput=document.getElementById('fileInput');
+const btnUpload=document.getElementById('btnUpload');
+const btnMask=document.getElementById('btnMask');
+const btnDownload=document.getElementById('btnDownload');
+const btnReset=document.getElementById('btnReset');
+const rightPanel=document.getElementById('right-panel');
+const closePanel=document.getElementById('close-panel');
+const maskList=document.getElementById('mask-list');
+const panelReset=document.getElementById('panel-reset');
 
-    let userImage = null;
-    let originalWidth = null;
-    let originalHeight = null;
+let userImage=null;
+let originalWidth=null;
+let originalHeight=null;
 
-    // --- helper: set canvas CSS size + backing pixels for crispness ---
-    function setCanvasSize(cssW, cssH) {
-      const ratio = window.devicePixelRatio || 1;
-      editorCanvas.style.width = cssW + 'px';
-      editorCanvas.style.height = cssH + 'px';
-      editorCanvas.width = Math.round(cssW * ratio);
-      editorCanvas.height = Math.round(cssH * ratio);
-      canvas.setWidth(cssW);
-      canvas.setHeight(cssH);
-      canvas.calcOffset();
+// --- helper: set canvas CSS size + backing pixels for crispness ---
+function setCanvasSize(cssW, cssH){
+  const ratio=window.devicePixelRatio||1;
+  editorCanvas.style.width=cssW+'px';
+  editorCanvas.style.height=cssH+'px';
+  editorCanvas.width=Math.round(cssW*ratio);
+  editorCanvas.height=Math.round(cssH*ratio);
+  canvas.setWidth(cssW);
+  canvas.setHeight(cssH);
+  canvas.calcOffset();
+  canvas.renderAll();
+}
+
+// init default editor size
+function initDefaultCanvas(){
+  const defaultSize=Math.min(460, Math.floor(window.innerWidth*0.92));
+  frame.style.width=defaultSize+'px';
+  frame.style.height=defaultSize+'px';
+  setCanvasSize(defaultSize, defaultSize);
+}
+initDefaultCanvas();
+
+// --- Upload logic ---
+btnUpload.addEventListener('click',()=>fileInput.click());
+fileInput.addEventListener('change',e=>{
+  if(!e.target.files[0])return;
+  const reader=new FileReader();
+  reader.onload=function(f){
+    fabric.Image.fromURL(f.target.result,function(img){
+      if(userImage){ try{ canvas.remove(userImage); } catch(err){} userImage=null; }
+      originalWidth=img.width;
+      originalHeight=img.height;
+      const maxAllowedW=Math.min(1200,Math.floor(window.innerWidth*0.92));
+      const maxAllowedH=Math.floor(window.innerHeight*0.75);
+      const scale=Math.min(maxAllowedW/originalWidth,maxAllowedH/originalHeight,1);
+      const displayW=Math.max(120,Math.round(originalWidth*scale));
+      const displayH=Math.round(originalHeight*scale);
+      frame.style.width=displayW+'px';
+      frame.style.height=displayH+'px';
+      setCanvasSize(displayW,displayH);
+      img.set({ left:0, top:0, originX:'left', originY:'top', selectable:false });
+      img.scaleToWidth(displayW);
+      userImage=img;
+      canvas.add(img);
+      canvas.sendToBack(img);
       canvas.renderAll();
-    }
+    },{crossOrigin:'anonymous'});
+  };
+  reader.readAsDataURL(e.target.files[0]);
+});
 
-    // init default editor size
-    function initDefaultCanvas() {
-      const defaultSize = Math.min(460, Math.floor(window.innerWidth * 0.92));
-      frame.style.width = defaultSize + 'px';
-      frame.style.height = defaultSize + 'px';
-      setCanvasSize(defaultSize, defaultSize);
-    }
-    initDefaultCanvas();
+// --- Download ---
+btnDownload.addEventListener('click',()=>{
+  if(!originalWidth||!originalHeight)return alert('Upload an image first');
+  const displayW=canvas.getWidth();
+  const multiplier=Math.max(1,originalWidth/displayW);
+  const dataURL=canvas.toDataURL({ format:'png', quality:1, multiplier:multiplier });
+  const link=document.createElement('a');
+  link.href=dataURL;
+  link.download='supermask.png';
+  link.click();
+});
 
-    // --- Upload logic: clamp display size to viewport but save original resolution ---
-    btnUpload.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', e => {
-      if (!e.target.files[0]) return;
-      const reader = new FileReader();
-      reader.onload = function(f) {
-        fabric.Image.fromURL(f.target.result, function(img) {
-          if (userImage) {
-            try { canvas.remove(userImage); } catch (err) {}
-            userImage = null;
-          }
+// --- Reset ---
+btnReset.addEventListener('click',()=>{
+  canvas.clear();
+  userImage=null;
+  originalWidth=null;
+  originalHeight=null;
+  fileInput.value='';
+  initDefaultCanvas();
+});
 
-          // store original (natural) resolution
-          originalWidth = img.width;
-          originalHeight = img.height;
-
-          // compute display size (clamped to viewport), do NOT let it be enormous
-          const maxAllowedW = Math.min(1200, Math.floor(window.innerWidth * 0.92)); // clamp
-          const maxAllowedH = Math.floor(window.innerHeight * 0.75);
-          const scale = Math.min(maxAllowedW / originalWidth, maxAllowedH / originalHeight, 1); // never upscale
-          const displayW = Math.max(120, Math.round(originalWidth * scale)); // minimum visible width
-          const displayH = Math.round(originalHeight * scale);
-
-          // apply display size to frame & canvas (editor)
-          frame.style.width = displayW + 'px';
-          frame.style.height = displayH + 'px';
-          setCanvasSize(displayW, displayH);
-
-          // place image to fill canvas visually
-          img.set({ left: 0, top: 0, originX: 'left', originY: 'top', selectable: false });
-          img.scaleToWidth(displayW);
-
-          userImage = img;
-          canvas.add(img);
-          canvas.sendToBack(img);
-          canvas.renderAll();
-        }, { crossOrigin: 'anonymous' });
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    });
-
-    // --- Download: export at original uploaded resolution (no UI resize required) ---
-    btnDownload.addEventListener('click', () => {
-      if (!originalWidth || !originalHeight) return alert('Upload an image first');
-      const displayW = canvas.getWidth();
-      // multiplier to reach original resolution
-      const multiplier = originalWidth / displayW;
-      // ensure multiplier >= 1 (if editor had upscaled tiny image we can still export at higher res)
-      const finalMultiplier = Math.max(1, multiplier);
-      const dataURL = canvas.toDataURL({ format: 'png', quality: 1, multiplier: finalMultiplier });
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = 'supermask.png';
-      link.click();
-    });
-
-    // --- Reset editor ---
-    btnReset.addEventListener('click', () => {
-      canvas.clear();
-      userImage = null;
-      originalWidth = null;
-      originalHeight = null;
-      fileInput.value = '';
-      initDefaultCanvas();
-    });
-
-    // --- Masks (36) ---
-    const masks = [];
-    for (let i = 1; i <= 36; i++) masks.push(`masks/mask${i}.png`);
-    masks.forEach(src => {
-      const thumb = document.createElement('img');
-      thumb.src = src;
-      thumb.alt = src.split('/').pop();
-      thumb.onerror = () => thumb.style.opacity = '0.4';
-      thumb.addEventListener('click', () => {
-        fabric.Image.fromURL(src, function(mask) {
-          const desiredWidth = Math.round(canvas.getWidth() * 0.45);
-          mask.set({ originX: 'left', originY: 'top', selectable: true });
-          mask.scaleToWidth(desiredWidth);
-          const left = Math.round((canvas.getWidth() - mask.getScaledWidth()) / 2);
-          const top = Math.round((canvas.getHeight() - mask.getScaledHeight()) / 2);
-          mask.set({ left, top });
-          mask.setControlsVisibility({ mt:true, mb:true, ml:true, mr:true, bl:true, br:true, tl:true, tr:true, mtr:true });
-          canvas.add(mask);
-          canvas.setActiveObject(mask);
-          canvas.renderAll();
-        }, { crossOrigin: 'anonymous' });
-      });
-      maskList.appendChild(thumb);
-    });
-
-    // Panel show/hide & reset
-    btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
-    closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
-    panelReset.addEventListener('click', () => {
-      const objs = canvas.getObjects().slice();
-      objs.forEach(o => { if (o !== userImage) canvas.remove(o); });
+// --- Masks (36) ---
+const masks=[];
+for(let i=1;i<=36;i++)masks.push(`masks/mask${i}.png`);
+masks.forEach(src=>{
+  const thumb=document.createElement('img');
+  thumb.src=src;
+  thumb.alt=src.split('/').pop();
+  thumb.onerror=()=>thumb.style.opacity='0.4';
+  thumb.addEventListener('click',()=>{
+    fabric.Image.fromURL(src,function(mask){
+      const desiredWidth=Math.round(canvas.getWidth()*0.45);
+      mask.set({ originX:'left', originY:'top', selectable:true });
+      mask.scaleToWidth(desiredWidth);
+      const left=Math.round((canvas.getWidth()-mask.getScaledWidth())/2);
+      const top=Math.round((canvas.getHeight()-mask.getScaledHeight())/2);
+      mask.set({ left, top });
+      mask.setControlsVisibility({ mt:true, mb:true, ml:true, mr:true, bl:true, br:true, tl:true, tr:true, mtr:true });
+      canvas.add(mask);
+      canvas.setActiveObject(mask);
       canvas.renderAll();
-    });
+    },{ crossOrigin:'anonymous' });
+  });
+  maskList.appendChild(thumb);
+});
 
-    // If viewport becomes smaller, shrink editor view proportionally (no object scaling mismatch)
-    window.addEventListener('resize', () => {
-      if (!userImage) {
-        // only need to clamp default canvas
-        const maxW = Math.floor(window.innerWidth * 0.92);
-        if (canvas.getWidth() > maxW) {
-          initDefaultCanvas();
-        }
-        return;
-      }
-      const maxAllowedW = Math.min(1200, Math.floor(window.innerWidth * 0.92));
-      const maxAllowedH = Math.floor(window.innerHeight * 0.75);
-      const currentW = canvas.getWidth();
-      const currentH = canvas.getHeight();
-      if (currentW <= maxAllowedW && currentH <= maxAllowedH) return;
+// --- Panel show/hide & reset ---
+btnMask.addEventListener('click',()=>rightPanel.style.display='flex');
+closePanel.addEventListener('click',()=>rightPanel.style.display='none');
+panelReset.addEventListener('click',()=>{
+  const objs=canvas.getObjects().slice();
+  objs.forEach(o=>{ if(o!==userImage) canvas.remove(o); });
+  canvas.renderAll();
+});
 
-      const scale = Math.min(maxAllowedW / currentW, maxAllowedH / currentH);
-      const newW = Math.round(currentW * scale);
-      const newH = Math.round(currentH * scale);
-      // scale all objects so they keep same visual proportions
-      canvas.getObjects().forEach(obj => {
-        obj.scaleX *= scale;
-        obj.scaleY *= scale;
-        obj.left *= scale;
-        obj.top *= scale;
-        obj.setCoords();
-      });
-      frame.style.width = newW + 'px';
-      frame.style.height = newH + 'px';
-      setCanvasSize(newW, newH);
-    });
-  </script>
+// --- Window resize ---
+window.addEventListener('resize',()=>{
+  if(!userImage){ const maxW=Math.floor(window.innerWidth*0.92); if(canvas.getWidth()>maxW)initDefaultCanvas(); return; }
+  const maxAllowedW=Math.min(1200,Math.floor(window.innerWidth*0.92));
+  const maxAllowedH=Math.floor(window.innerHeight*0.75);
+  const currentW=canvas.getWidth();
+  const currentH=canvas.getHeight();
+  if(currentW<=maxAllowedW && currentH<=maxAllowedH) return;
+  const scale=Math.min(maxAllowedW/currentW,maxAllowedH/currentH);
+  const newW=Math.round(currentW*scale);
+  const newH=Math.round(currentH*scale);
+  canvas.getObjects().forEach(obj=>{ obj.scaleX*=scale; obj.scaleY*=scale; obj.left*=scale; obj.top*=scale; obj.setCoords(); });
+  frame.style.width=newW+'px';
+  frame.style.height=newH+'px';
+  setCanvasSize(newW,newH);
+});
+</script>
 </body>
 </html>
