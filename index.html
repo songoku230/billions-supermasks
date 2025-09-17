@@ -7,7 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root { --blue:#1e90ff; --dark:#111; --radius:16px; }
-body{ margin:0; min-height:100vh; font-family:'Poppins',sans-serif; background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%); color:var(--dark); display:flex; flex-direction:column; align-items:center; padding:20px 0; }
+
+body{
+  margin:0; min-height:100vh; font-family:'Poppins',sans-serif;
+  background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%);
+  color:var(--dark); display:flex; flex-direction:column; align-items:center; padding:20px 0;
+}
+
 .container{ text-align:center; max-width:720px; width:94%; padding:0 10px; }
 h1{ margin:0 0 16px; line-height:1.2; }
 .title-top{ display:block; font-weight:400; font-size:1.4rem; }
@@ -16,45 +22,59 @@ h1{ margin:0 0 16px; line-height:1.2; }
 button{ padding:8px 14px; font-size:.9rem; font-weight:600; border:none; border-radius:var(--radius); cursor:pointer; transition:all .2s ease; background:linear-gradient(180deg,#1e90ff,#4682b4); color:#fff; }
 button:hover{ filter:brightness(1.08); }
 
-.frame{ margin:0 auto 20px; border-radius:var(--radius); overflow:hidden; position:relative; background:rgba(255,255,255,0.65); border:3px solid rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:80vh; }
+.frame{
+  margin:0 auto 20px; border-radius:var(--radius); overflow:hidden; position:relative;
+  background:rgba(255,255,255,0.65); border:3px solid rgba(255,255,255,0.6);
+  display:flex; align-items:center; justify-content:center; max-width:92vw; max-height:80vh;
+}
 canvas{ border-radius:var(--radius); display:block; }
 
 .made-by{ margin-top:10px; font-size:.9rem; }
 .made-by a{ color:var(--blue); text-decoration:none; margin:0 6px; }
 .made-by a:hover{ text-decoration:underline; }
 
-#right-panel{ position:fixed; top:50%; right:50px; transform:translateY(-50%); width:300px; height:550px; background:rgba(255,255,255,0.95); border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2); padding:10px; display:none; z-index:20; flex-direction:column; }
+#right-panel{
+  position:fixed; top:50%; right:50px; transform:translateY(-50%);
+  width:300px; height:550px; background:rgba(255,255,255,0.95);
+  border-radius:16px; box-shadow:0 0 15px rgba(0,0,0,0.2);
+  padding:10px; display:none; z-index:20; flex-direction:column;
+}
 #right-panel h3{ margin:0; text-align:center; font-weight:600; }
-#close-panel{ position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
-#mask-list{ flex:1; display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:40px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#1e90ff rgba(0,0,0,0.1); padding-bottom:10px; padding-right:6px; }
-#mask-list img{ width:100%; cursor:pointer; border-radius:8px; object-fit:contain; background:#fff; padding:8px; box-sizing:border-box; }
+
+#close-panel{
+  position:absolute; top:8px; right:8px;
+  background: rgba(255,255,255,0.9);
+  border:none; font-size:1.4rem; cursor:pointer; z-index:100;
+  border-radius:50%; width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+}
+#close-panel:hover{ background: rgba(255,255,255,1); }
+
+#mask-list{
+  flex:1; display:grid; grid-template-columns:repeat(2,1fr);
+  gap:10px; margin-top:40px; overflow-y:auto; scrollbar-width:thin;
+  scrollbar-color:#1e90ff rgba(0,0,0,0.1); padding-bottom:10px; padding-right:6px;
+}
+#mask-list img{
+  width:100%; cursor:pointer; border-radius:8px; object-fit:contain;
+  background:#fff; padding:8px; box-sizing:border-box;
+}
 #mask-list img:hover{ border:2px solid var(--blue); }
 #panel-reset{ margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
 
 /* Mobile responsive */
 @media (max-width:600px){
   #right-panel{
-    top:auto;
-    bottom:10px;
-    right:50%;
-    transform:translateX(50%);
-    width:95%;
-    height:150px;
-    flex-direction:column;
-    padding:6px;
+    top:auto; bottom:10px; right:50%; transform:translateX(50%);
+    width:95%; height:150px; flex-direction:column; padding:6px;
   }
   #mask-list{
-    display:flex;
-    flex-direction:row;
-    gap:8px;
-    overflow-x:auto;
-    overflow-y:hidden;
-    margin-top:8px;
-    padding:0 6px;
+    display:flex; flex-direction:row; gap:8px; overflow-x:auto; overflow-y:hidden; margin-top:8px; padding:0 6px;
   }
   #mask-list img{ flex:0 0 auto; width:80px; height:80px; }
   .buttons{ flex-direction:column; gap:8px; }
   button{ width:100%; font-size:1rem; padding:10px; }
+  #close-panel{ top:4px; right:4px; font-size:1.4rem; width:32px; height:32px; }
 }
 </style>
 </head>
