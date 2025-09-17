@@ -74,16 +74,11 @@ canvas{ border-radius:var(--radius); display:block; }
 #panel-reset{ margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
 
 /* Mobile responsive */
- @media (max-width:600px){
-  #close-panel{
-    top:4px !important;
-    right:4px !important;
-    font-size:1.6rem !important;
-    width:36px !important;
-    height:36px !important;
-    z-index:9999 !important;
+@media (max-width:600px){
+  #right-panel{
+    top:auto; bottom:10px; right:50%; transform:translateX(50%);
+    width:95%; height:150px; flex-direction:column; padding:6px;
   }
-}
   #mask-list{
     display:flex; flex-direction:row; gap:8px; overflow-x:auto; overflow-y:hidden; margin-top:8px; padding:0 6px;
   }
@@ -275,3 +270,5 @@ window.addEventListener('resize',()=>{
 </script>
 </body>
 </html>
+
+check the error 
