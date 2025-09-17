@@ -6,49 +6,76 @@
   <title>Billions Supermasks</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --blue:#1e90ff; --dark:#111; --radius:16px; }
+    :root {
+      --blue: #1e90ff;
+      --dark: #111;
+      --radius: 16px;
+    }
     body {
-      margin:0;
-      min-height:100vh;
-      font-family:'Poppins',sans-serif;
-      background:linear-gradient(90deg,#ff69b4 50%,#4ef5a2 50%);
-      color:var(--dark);
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:20px 0;
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(90deg, #ff69b4 50%, #4ef5a2 50%);
+      color: var(--dark);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .container {
-      text-align:center;
-      max-width:720px;
-      width:94%;
-      padding:0 10px;
+      text-align: center;
+      max-width: 720px;
+      width: 94%;
+      padding: 20px;
     }
-    h1{margin:0 0 16px;line-height:1.2;}
-    .title-top{display:block;font-weight:400;font-size:1.4rem;}
-    .title-main{display:block;font-weight:700;font-size:2.6rem;}
-    .buttons{display:flex;justify-content:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-    button{padding:8px 14px;font-size:.9rem;font-weight:600;border:none;border-radius:var(--radius);cursor:pointer;transition:all .2s ease;background:linear-gradient(180deg,#1e90ff,#4682b4);color:#fff;}
-    button:hover{filter:brightness(1.08)}
+    h1 { margin: 0 0 16px; line-height: 1.2; }
+    .title-top { display: block; font-weight: 400; font-size: 1.4rem; }
+    .title-main { display: block; font-weight: 700; font-size: 2.6rem; }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: linear-gradient(180deg, #1e90ff, #4682b4);
+      color: #fff;
+    }
+    button:hover { filter: brightness(1.08); }
     .frame {
-      margin:0 auto 20px;
-      border-radius:var(--radius);
-      overflow:hidden;
-      position:relative;
-      background:rgba(255,255,255,0.65);
-      border:3px solid rgba(255,255,255,0.6);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      /* allow frame to grow/shrink; we set its explicit width/height from JS on upload */
-      max-width:92vw;
-      max-height:80vh;
+      width: min(460px, 92vw);
+      aspect-ratio: 1/1;
+      margin: 0 auto 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      background: rgba(255,255,255,0.65);
+      border: 3px solid rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    canvas { border-radius:var(--radius); display:block; }
-    .made-by { margin-top:10px; font-size:.9rem; }
-    .made-by a { color:var(--blue); text-decoration:none; margin:0 6px; }
-    .made-by a:hover { text-decoration:underline; }
+    canvas {
+      border-radius: var(--radius);
+    }
+    .made-by {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .made-by a {
+      color: #1e90ff;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+    .made-by a:hover { text-decoration: underline; }
 
     #right-panel {
       position: fixed;
@@ -57,7 +84,7 @@
       transform: translateY(-50%);
       width: 300px;
       height: 550px;
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.9);
       border-radius: 16px;
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
       padding: 10px;
@@ -65,27 +92,47 @@
       z-index: 20;
       flex-direction: column;
     }
-    #right-panel h3 { margin:0; text-align:center; font-weight:600; }
-    #close-panel { position:absolute; top:8px; right:8px; background:none; border:none; font-size:1.2rem; cursor:pointer; }
-    #mask-list {
-      flex:1;
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-      margin-top:40px;
-      overflow-y:auto;
-      scrollbar-width:thin;
-      scrollbar-color:#1e90ff rgba(0,0,0,0.1);
-      padding-bottom:10px;
-      padding-right:6px;
+    #right-panel h3 {
+      margin: 0;
+      text-align: center;
+      font-weight: 600;
     }
-    #mask-list img { width:100%; cursor:pointer; border-radius:8px; object-fit:contain; background:#fff; padding:8px; box-sizing:border-box; }
-    #mask-list img:hover { border:2px solid var(--blue); }
-    #panel-reset { margin-top:10px; padding:6px 12px; border-radius:var(--radius); border:none; background:linear-gradient(180deg,#ff6347,#ff4500); color:#fff; font-weight:600; cursor:pointer; }
-
-    /* small screens: move panel to bottom */
-    @media (max-width:800px) {
-      #right-panel { right: 12px; top: auto; bottom: 12px; transform:none; width: 86vw; height: 38vh; display:none; }
+    #close-panel {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    #mask-list {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 40px;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: #1e90ff rgba(0,0,0,0.1);
+      padding-bottom: 10px;
+    }
+    #mask-list img {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    #mask-list img:hover { border: 2px solid var(--blue); }
+    #panel-reset {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(180deg, #ff6347, #ff4500);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -102,14 +149,11 @@
       <button id="btnDownload">Download</button>
       <button id="btnReset">Reset</button>
     </div>
-
-    <div class="frame" id="frame" aria-label="editor frame">
-      <!-- No fixed width/height on canvas; JS will set sizes -->
+    <div class="frame" id="frame">
       <canvas id="editorCanvas"></canvas>
     </div>
-
     <div class="made-by">
-      Made by:
+      Made by: 
       <a href="https://x.com/songoku230_" target="_blank">@songoku230_</a>
       <a href="https://x.com/TheFarLax" target="_blank">@TheFarLax</a>
     </div>
@@ -130,7 +174,6 @@
       selection: true
     });
 
-    // Small, clean resize handles (global)
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = '#1e90ff';
     fabric.Object.prototype.cornerStyle = 'circle';
@@ -145,199 +188,129 @@
     const closePanel = document.getElementById('close-panel');
     const maskList = document.getElementById('mask-list');
     const panelReset = document.getElementById('panel-reset');
-    const frame = document.getElementById('frame');
-    const editorCanvas = document.getElementById('editorCanvas');
+    const frameBox = document.getElementById('frame');
 
     let userImage = null;
+    let originalWidth = null;
+    let originalHeight = null;
 
-    // --- utility to set canvas size (CSS + backing store for crispness) ---
-    function setCanvasSize(cssWidth, cssHeight) {
-      const ratio = window.devicePixelRatio || 1;
-
-      // CSS size (how it appears on screen)
-      editorCanvas.style.width = cssWidth + 'px';
-      editorCanvas.style.height = cssHeight + 'px';
-
-      // Backing store size (actual pixel buffer)
-      editorCanvas.width = Math.round(cssWidth * ratio);
-      editorCanvas.height = Math.round(cssHeight * ratio);
-
-      // Inform fabric about logical canvas size (fabric works in CSS px coordinates)
-      canvas.setWidth(cssWidth);
-      canvas.setHeight(cssHeight);
-
-      // Required to re-calc offsets and render crisply
-      canvas.calcOffset();
-      canvas.renderAll();
-    }
-
-    // Initialize default square canvas (same behavior as before)
-    function initDefaultCanvas() {
-      const defaultSize = Math.min(460, Math.floor(window.innerWidth * 0.92));
-      frame.style.width = defaultSize + 'px';
-      frame.style.height = defaultSize + 'px';
-      setCanvasSize(defaultSize, defaultSize);
-    }
-    initDefaultCanvas();
-
-    // Upload handlers
+    // Upload image
     btnUpload.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', e => {
-      if (!e.target.files[0]) return;
-      const reader = new FileReader();
-      reader.onload = function(f) {
-        // Create fabric image from dataURL
-        fabric.Image.fromURL(f.target.result, function(img) {
-          // remove previous user image (but keep other objects if you want)
-          if (userImage) {
-            try { canvas.remove(userImage); } catch(e) {}
-            userImage = null;
-          }
+      if (e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(f) {
+          fabric.Image.fromURL(f.target.result, function(img) {
+            if (userImage) canvas.remove(userImage);
 
-          // original image size
-          const imgW = img.width;
-          const imgH = img.height;
+            // Save original resolution
+            originalWidth = img.width;
+            originalHeight = img.height;
 
-          // compute maximum allowed canvas size (within viewport and container)
-          const maxAllowedW = Math.min(720, Math.floor(window.innerWidth * 0.92)); // clamp to viewport
-          const maxAllowedH = Math.floor(window.innerHeight * 0.75);
+            // Resize canvas + frame to original image size
+            canvas.setWidth(img.width);
+            canvas.setHeight(img.height);
+            frameBox.style.width = img.width + "px";
+            frameBox.style.height = img.height + "px";
 
-          // scale down if image is bigger than allowed, do NOT upscale small images
-          const scale = Math.min(maxAllowedW / imgW, maxAllowedH / imgH, 1);
+            // Place at 1:1 scale
+            img.set({
+              left: 0,
+              top: 0,
+              scaleX: 1,
+              scaleY: 1,
+              selectable: false
+            });
 
-          // final display size in CSS pixels
-          const finalW = Math.max(120, Math.round(imgW * scale)); // ensure too-tiny images still show
-          const finalH = Math.round(imgH * scale);
-
-          // resize frame & canvas
-          frame.style.width = finalW + 'px';
-          frame.style.height = finalH + 'px';
-          setCanvasSize(finalW, finalH);
-
-          // Put the image at 0,0 and scale it to exactly the canvas width (keeps aspect)
-          img.set({
-            left: 0,
-            top: 0,
-            originX: 'left',
-            originY: 'top',
-            selectable: false
+            userImage = img;
+            canvas.add(img);
+            canvas.sendToBack(img);
+            canvas.renderAll();
           });
-          // ensure it exactly fills the canvas width
-          img.scaleToWidth(finalW);
-
-          // Add to canvas (at back)
-          userImage = img;
-          canvas.add(img);
-          canvas.sendToBack(img);
-          canvas.renderAll();
-        }, { crossOrigin: 'anonymous' });
-      };
-      reader.readAsDataURL(e.target.files[0]);
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
     });
 
-    // --- Right panel show/hide ---
+    // Panel
     btnMask.addEventListener('click', () => rightPanel.style.display = 'flex');
     closePanel.addEventListener('click', () => rightPanel.style.display = 'none');
 
-    // --- Reset entire canvas (clear everything and return to default size) ---
+    // Reset
     btnReset.addEventListener('click', () => {
       canvas.clear();
       userImage = null;
+      originalWidth = null;
+      originalHeight = null;
       fileInput.value = '';
-      initDefaultCanvas();
+      frameBox.style.width = "min(460px,92vw)";
+      frameBox.style.height = "auto";
     });
 
-    // --- Download final PNG ---
+    // Download at original resolution
     btnDownload.addEventListener('click', () => {
-      // Use canvas.toDataURL; fabric will use the canvas backing store for DPI
+      if (!originalWidth || !originalHeight) return;
+
+      // Backup current canvas size
+      const currentWidth = canvas.getWidth();
+      const currentHeight = canvas.getHeight();
+
+      // Resize to original
+      canvas.setWidth(originalWidth);
+      canvas.setHeight(originalHeight);
+
+      // Scale everything proportionally
+      const scaleX = originalWidth / currentWidth;
+      const scaleY = originalHeight / currentHeight;
+      canvas.setZoom(scaleX);
+      canvas.absolutePan({ x: 0, y: 0 });
+
+      // Export high-quality PNG
       const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
+
+      // Restore editor view
+      canvas.setWidth(currentWidth);
+      canvas.setHeight(currentHeight);
+      canvas.setZoom(1);
+      canvas.renderAll();
+
+      // Trigger download
       const link = document.createElement('a');
       link.href = dataURL;
       link.download = 'supermask.png';
       link.click();
     });
 
-    // --- Load masks (36 masks) ---
+    // Load masks
     const masks = [];
-    for (let i = 1; i <= 36; i++) {
+    for (let i = 1; i <= 36; i++) { // now 36 masks
       masks.push(`masks/mask${i}.png`);
     }
 
     masks.forEach(src => {
       const img = document.createElement('img');
       img.src = src;
-      img.alt = src.split('/').pop();
-      // small visual feedback in case image fails to load
-      img.onerror = () => img.style.opacity = '0.4';
       img.addEventListener('click', () => {
-        // Add mask to canvas; scale mask relative to canvas width
         fabric.Image.fromURL(src, function(mask) {
-          // desired mask width ~ 45% of canvas width (tweakable)
-          const desiredWidth = Math.round(canvas.getWidth() * 0.45);
           mask.set({
-            originX: 'left',
-            originY: 'top',
-            selectable: true
+            left: 50,
+            top: 50,
+            scaleX: 0.3,
+            scaleY: 0.3
           });
-          // scale mask to desiredWidth while preserving aspect
-          mask.scaleToWidth(desiredWidth);
-
-          // center mask
-          const left = Math.round((canvas.getWidth() - mask.getScaledWidth()) / 2);
-          const top = Math.round((canvas.getHeight() - mask.getScaledHeight()) / 2);
-          mask.set({ left, top });
-
-          // nicer controls on mask
-          mask.setControlsVisibility({
-            mt: true, mb: true, ml: true, mr: true,
-            bl: true, br: true, tl: true, tr: true, mtr: true
-          });
-
           canvas.add(mask);
           canvas.setActiveObject(mask);
           canvas.renderAll();
-        }, { crossOrigin: 'anonymous' });
+        });
       });
       maskList.appendChild(img);
     });
 
-    // Panel reset: remove all non-userImage objects (keeps the uploaded image)
+    // Panel reset (remove all masks but keep user image)
     panelReset.addEventListener('click', () => {
-      const objs = canvas.getObjects().slice(); // copy
-      objs.forEach(obj => {
-        if (userImage && obj === userImage) return;
-        canvas.remove(obj);
+      canvas.getObjects().forEach(obj => {
+        if (obj !== userImage) canvas.remove(obj);
       });
-      canvas.renderAll();
-    });
-
-    // If viewport size changes, we keep the current canvas size but optionally clamp if it overflows.
-    // (you can remove/modify the behavior below if you want auto-resize on window resize)
-    window.addEventListener('resize', () => {
-      // if the frame is wider than viewport allowed, shrink it proportionally
-      const maxW = Math.floor(window.innerWidth * 0.92);
-      const maxH = Math.floor(window.innerHeight * 0.75);
-      const currentW = canvas.getWidth();
-      const currentH = canvas.getHeight();
-
-      if (currentW > maxW || currentH > maxH) {
-        const scale = Math.min(maxW/currentW, maxH/currentH);
-        const newW = Math.round(currentW * scale);
-        const newH = Math.round(currentH * scale);
-        // change frame + backing store, then scale all objects on canvas to new scale
-        const ratio = newW / currentW;
-        // scale objects (including userImage)
-        canvas.getObjects().forEach(obj => {
-          obj.scaleX = obj.scaleX * ratio;
-          obj.scaleY = obj.scaleY * ratio;
-          obj.left = obj.left * ratio;
-          obj.top = obj.top * ratio;
-          obj.setCoords();
-        });
-        frame.style.width = newW + 'px';
-        frame.style.height = newH + 'px';
-        setCanvasSize(newW, newH);
-      }
     });
   </script>
 </body>
